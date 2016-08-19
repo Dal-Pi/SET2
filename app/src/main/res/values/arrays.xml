@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="itemColors">
+        <item>@color/blue</item>
+        <item>@color/navy</item>
+        <item>@color/green</item>
+        <item>@color/yellow</item>
+        <item>@color/purple</item>
+        <item>@color/orange</item>
+    </array>
+
+    <array name="pastelColors">
         <item>@color/pastel_blue</item>
         <item>@color/pastel_pink</item>
         <item>@color/pastel_green</item>

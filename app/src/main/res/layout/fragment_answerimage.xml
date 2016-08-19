@@ -1,0 +1,15 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.kania.set2.ui.AnswerImageFragment">
+
+    <ImageView
+        android:id="@+id/answer_image_result"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/answer_right"
+        android:scaleType="centerInside"
+        android:visibility="invisible"/>
+
+</FrameLayout>

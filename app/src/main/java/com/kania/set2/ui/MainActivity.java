@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.kania.set2.R;
-import com.kania.set2.provider.RandomNumberProvider;
+import com.kania.set2.util.RandomNumberUtil;
 
 import java.util.Calendar;
 
@@ -28,9 +28,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setTitleBGColor() {
-        int[] colors = getResources().getIntArray(R.array.itemColors);
+        int[] colors = getResources().getIntArray(R.array.pastelColors);
         Calendar calendar = Calendar.getInstance();
-        int randomIndex = RandomNumberProvider.getInstance(calendar.getTimeInMillis())
+        int randomIndex = RandomNumberUtil.getInstance(calendar.getTimeInMillis())
                 .getRandomNumber(colors.length);
 
         ViewGroup layoutTitle = (ViewGroup)findViewById(R.id.main_layout_bg_title);

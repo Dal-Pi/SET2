@@ -1,5 +1,7 @@
 package com.kania.set2.ui;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
@@ -7,22 +9,22 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kania.set2.R;
-import com.kania.set2.provider.RandomNumberProvider;
+import com.kania.set2.util.RandomNumberUtil;
 import com.kania.set2.model.SetItemData;
 import com.kania.set2.model.SetVerifier;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class TimeAttackActivity extends AppCompatActivity implements View.OnClickListener{
+public class TimeAttackActivity extends AppCompatActivity implements View.OnClickListener,
+        NineCardFragment.OnSelectThreeCardListener{
 
     public static final int GAME_TIME = 60;
     public static final int POINT_USE_NO_HINT = 3;
@@ -39,86 +41,120 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
 
     public static final int ANIMATION_DURATION = 2000;
 
-    //tools
-    private RandomNumberProvider mRandomNumberProvider;
-    private int[] mColors;
+    //utils
+    private RandomNumberUtil mRandomNumberUtil;
 
     //game data
     private int mDifficulty;
     private int mRemainTime;
     private int mScore;
     private int mHintCount;
-    private int mSelectCount;
-    private int mSelectedColor;
-    private int mNotSelectedColor;
     private ArrayList<SetItemData> mAllItemList;
     private int[] mAllItemListSequence;
     private ArrayList<SetItemData> mAnswerList;
     private ArrayList<SetItemData> mDeckList;
-    private ArrayList<CardViewData> mCardViewList;
     private int[] mDeckListSequence;
-    private int[] mAnswerColors;
+
+    //fragments
+    private AnswerImageFragment mAnswerImageFragment;
+    private NineCardFragment mNineCardFragment;
 
     //layout
-    private LinearLayout mResultLayout;
-    private ImageView mImageNoti;
+    private ViewGroup mResultLayout;
+    private TextView mTextResult;
     private TextView mTextRemainTime;
     private TextView mTextScore;
     private TextView mTextScorePlus;
     private Button mBtnHint;
-    private ImageView[] mCardViews;
-    private RelativeLayout[] mCardLayout;
-
-    //listener
-    private CardClickListener mCardClickListener;
+    private Button mBtnRegister;
 
     //timer handler
+    private boolean mIsStart;
     private TimerHandler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_only_one_set_game);
+        setContentView(R.layout.activity_timeattack);
+
+        addFragment();
 
         initViews();
         initTools();
         initGame(savedInstanceState);
 
-        startGame();
+        mIsStart = false; // delay for loading fragments
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!mIsStart) {
+            //it will only one time run
+            mIsStart = true;
+            startGame();
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_REMAIN_TIME, mRemainTime);
+        outState.putInt(KEY_SCORE, mScore);
+        outState.putInt(KEY_HINT_COUNT, mHintCount);
+        //TODO save setItem as putSerializable
+    }
+
+    @Override
+    public void onThreeCardSelected(ArrayList<SetItemData> selectedList) {
+        if (checkAnswer(selectedList)) {
+            addScore();
+            setNotiImage(true);
+            askQuestion();
+        } else {
+            setNotiImage(false);
+            mNineCardFragment.unselectAllCard();
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        switch (id) {
+            case R.id.timeattack_btn_hint:
+                selectHint();
+                break;
+        }
+    }
+
+    private void addFragment() {
+        mAnswerImageFragment = AnswerImageFragment.newInstance();
+        //TODO expend card type
+        mNineCardFragment = NineCardFragment
+                .newInstance(NineCardFragment.CARD_TYPE_FILL_AS_PATTERN, true, this);
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.timeattack_container_answer, mAnswerImageFragment);
+        fragmentTransaction.add(R.id.timeattack_container_ninecard, mNineCardFragment);
+        //TODO add score framgent
+        fragmentTransaction.commit();
     }
 
     private void initViews() {
-        mCardClickListener = new CardClickListener();
-        mCardViews = new ImageView[9];
-        mCardLayout = new RelativeLayout[9];
-        for (int i = 0; i < 9; ++i) {
-            mCardViews[i] = (ImageView)findViewById(getResources().
-                    getIdentifier("only_one_card_image" + (i + 1), "id", getPackageName()));
-            mCardViews[i].setOnClickListener(mCardClickListener);
-            mCardLayout[i] = (RelativeLayout)findViewById(getResources().
-                    getIdentifier("only_one_card_layout" + (i + 1), "id", getPackageName()));
-        }
-        mCardViewList = new ArrayList<>();
-        mSelectedColor = getResources().getColor(R.color.base_darkgray);
-        mNotSelectedColor = getResources().getColor(R.color.base_white);
-
-        mResultLayout = (LinearLayout)findViewById(R.id.only_one_layout_result);
-        mImageNoti = (ImageView)findViewById(R.id.only_one_image_result);
-        mTextRemainTime = (TextView)findViewById(R.id.only_one_text_remain);
-        mTextScore = (TextView)findViewById(R.id.only_one_text_score);
-        mTextScorePlus = (TextView)findViewById(R.id.only_one_text_plus_score);
-        mBtnHint = (Button)findViewById(R.id.only_one_btn_hint);
+        mResultLayout = (ViewGroup)findViewById(R.id.timeattack_layout_result);
+        mTextResult = (TextView)findViewById(R.id.timeattack_text_result);
+        mBtnRegister = (Button)findViewById(R.id.timeattack_btn_register);
+        mTextRemainTime = (TextView)findViewById(R.id.timeattack_text_remain);
+        mTextScore = (TextView)findViewById(R.id.timeattack_text_score);
+        mTextScorePlus = (TextView)findViewById(R.id.timeattack_text_plus_score);
+        mBtnHint = (Button)findViewById(R.id.timeattack_btn_hint);
         mBtnHint.setOnClickListener(this);
     }
 
     private void initTools() {
         Calendar calendar = Calendar.getInstance();
-        mRandomNumberProvider = RandomNumberProvider.getInstance(calendar.getTimeInMillis());
-        mColors = getResources().getIntArray(R.array.itemColors);
-        if (mColors.length < 3) {
-            mColors = new int[]{R.color.base_lightgray, R.color.base_darkgray,
-                    R.color.base_black};
-        }
+        mRandomNumberUtil = RandomNumberUtil.getInstance(calendar.getTimeInMillis());
+
         mHandler = new TimerHandler();
     }
 
@@ -151,6 +187,9 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void startGame() {
+        mTextScore.setText(getResources()
+                .getText(R.string.timeattack_text_score) + " : " + mScore);
+        mNineCardFragment.setClickable(true);
         askQuestion();
         if (mHandler != null) {
             mHandler.sendEmptyMessage(0);
@@ -160,8 +199,14 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
     private void askQuestion() {
         createNewDeck();
         initHint();
-        initCardViews();
-        initCardLayout();
+
+        //make random position
+        mDeckListSequence = mRandomNumberUtil.getRandomNumberSet(mDeckList.size());
+        ArrayList<SetItemData> askList = new ArrayList<>();
+        for (int i = 0; i < 9; ++i) {
+            askList.add(mDeckList.get(mDeckListSequence[i]));
+        }
+        mNineCardFragment.setCards(askList);
     }
 
     private void createNewDeck() {
@@ -175,54 +220,6 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
             Toast.makeText(this, "error occurred on getNewDeckWithAnswer()",
                     Toast.LENGTH_SHORT).show();
         }
-
-        mAnswerColors = getRandomColor();
-        //TODO set to layout
-        //make random position
-        mDeckListSequence = mRandomNumberProvider.getRandomNumberSet(mDeckList.size());
-
-        mHintCount = 0;
-    }
-
-    private int[] getRandomColor() {
-        int[] ret = new int[3];
-        int[] colorSequence = mRandomNumberProvider.getRandomNumberSet(mColors.length);
-        for (int i = 0; i < 3; ++i) {
-            ret[i] = mColors[colorSequence[i]];
-        }
-        return ret;
-    }
-
-    private void initCardViews() {
-        mCardViewList.clear();
-        for (int i = 0; i < 9; ++i) {
-            //for debug, if do not put as random, answer will present 1,2,3 cards
-            //SetItemData item = mDeckList.get(i);
-            SetItemData item = mDeckList.get(mDeckListSequence[i]);
-            mCardViews[i].setImageResource(getShapeAndFillResId(item));
-            mCardViews[i].setBackgroundColor(mAnswerColors[item.mColor]);
-            mCardViewList.add(new CardViewData(item));
-            mCardLayout[i].setBackgroundColor(mNotSelectedColor);
-        }
-    }
-
-    private void initHint() {
-        mHintCount = 0;
-        mBtnHint.setEnabled(true);
-    }
-
-    private void initCardLayout() {
-        for (int i = 0; i < 9; ++i) {
-            mCardViewList.get(i).mIsChecked = false;
-            mCardLayout[i].setBackgroundColor(mNotSelectedColor);
-        }
-        mSelectCount = 0;
-    }
-
-    private int getShapeAndFillResId(SetItemData item) {
-        //TODO you can make random shape
-        String resourceName = "shape_and_fill_0" + item.mShape + item.mFill + "0"; //color and amount is zero
-        return getResources().getIdentifier(resourceName, "drawable", getPackageName());
     }
 
     @Nullable
@@ -232,7 +229,7 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
         SetItemData thirdItem = null;
         ArrayList<SetItemData> ret = new ArrayList<>();
 
-        mAllItemListSequence = mRandomNumberProvider.getRandomNumberSet(mAllItemList.size()); //3*3*3*1
+        mAllItemListSequence = mRandomNumberUtil.getRandomNumberSet(mAllItemList.size()); //3*3*3*1
         firstItem = mAllItemList.get(mAllItemListSequence[0]);
         if (difficulty == DIFFICULTY_HARD) {
             secondItem = mAllItemList.get(mAllItemListSequence[1]);
@@ -284,7 +281,7 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
         ArrayList<SetItemData> ret = new ArrayList<>();
         ret.addAll(answer);
 
-        int[] sequence = mRandomNumberProvider.getRandomNumberSet(27); //3*3*3*1
+        int[] sequence = mRandomNumberUtil.getRandomNumberSet(27); //3*3*3*1
         for (int i = 0; i < mAllItemListSequence.length; ++i) {
             ArrayList<SetItemData> forCheck = new ArrayList<>();
             SetItemData candidate = mAllItemList.get(mAllItemListSequence[i]);
@@ -329,13 +326,25 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
         return ret;
     }
 
-    private boolean checkAnswer() {
-        ArrayList<SetItemData> candidates = new ArrayList<>();
-        for (CardViewData card : mCardViewList) {
-            if (card.mIsChecked) {
-                candidates.add(card.getmSetitemData());
-            }
-        }
+//    private void initCardViews() {
+//        mCardViewList.clear();
+//        for (int i = 0; i < 9; ++i) {
+//            //for debug, if do not put as random, answer will present 1,2,3 cards
+//            //SetItemData item = mDeckList.get(i);
+//            SetItemData item = mDeckList.get(mDeckListSequence[i]);
+//            mCardViews[i].setImageResource(getShapeAndFillResId(item));
+//            mCardViews[i].setBackgroundColor(mAnswerColors[item.mColor]);
+//            mCardViewList.add(new CardViewData(item));
+//            mCardLayout[i].setBackgroundColor(mNotSelectedColor);
+//        }
+//    }
+
+    private void initHint() {
+        mHintCount = 0;
+        mBtnHint.setEnabled(true);
+    }
+
+    private boolean checkAnswer(ArrayList<SetItemData> candidates) {
         //TODO verifying
         if (candidates.size() != 3) {
             return false;
@@ -346,7 +355,8 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
     private void addScore() {
         int point = calculatePoint();
         mScore += point;
-        mTextScore.setText("" + mScore);
+        mTextScore.setText(getResources()
+                .getText(R.string.timeattack_text_score) + " : " + mScore);
         mTextScorePlus.setText(" +" + point);
     }
 
@@ -361,13 +371,10 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void setNotiImage(boolean status) {
+        mAnswerImageFragment.setNotiImage(status);
         if (status) {
-            mImageNoti.setImageDrawable(getResources().getDrawable(R.drawable.answer_right));
             crossfadeAddedScore();
-        } else {
-            mImageNoti.setImageDrawable(getResources().getDrawable(R.drawable.answer_wrong));
         }
-        crossfadeNotiImage();
     }
 
     private void crossfadeAddedScore() {
@@ -378,20 +385,9 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
                 .setListener(null);
     }
 
-    private void crossfadeNotiImage() {
-        mImageNoti.setAlpha(1f);
-        mImageNoti.animate()
-                .alpha(0f)
-                .setDuration(ANIMATION_DURATION)
-                .setListener(null);
-    }
-
     private void reduceTime() {
         mRemainTime--;
         if (mRemainTime <= 0) {
-            //TODO string
-            mTextRemainTime.setText("end!");
-            mResultLayout.setVisibility(View.VISIBLE);
             endGame();
         } else {
             mTextRemainTime.setText("" + mRemainTime);
@@ -402,17 +398,16 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void endGame() {
-        setEndState();
+        mAnswerImageFragment.setVisible(false);
+        //TODO remove?
+        mTextResult.setText(getResources().getText(R.string.timeattack_text_result)
+                .toString() + " " + mScore);
+        mResultLayout.setVisibility(View.VISIBLE);
+        mTextRemainTime.setText(getResources().getText(R.string.timeattack_text_end));
+        mBtnHint.setEnabled(false);
+        mNineCardFragment.setClickable(false);
     }
 
-    private void setEndState() {
-        //TODO
-        //
-        mBtnHint.setEnabled(false);
-        for (int i = 0; i < 9; ++i) {
-            mCardViews[i].setClickable(false);
-        }
-    }
     private void selectHint() {
         //TODO when click hint
         SetItemData hintTarget1;
@@ -424,82 +419,15 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
             hintTarget2 = mAnswerList.get(2);
         }
 
-        initCardLayout();
-        for (int i = 0; i < 9; ++i) {
-            SetItemData candidate = mCardViewList.get(i).getmSetitemData();
-            if (hintTarget1.isSameWith(candidate)) {
-                selectCard(i);
-            } else if (hintTarget2 != null && hintTarget2.isSameWith(candidate)) {
-                selectCard(i);
-            }
+        ArrayList<SetItemData> hints = new ArrayList<>();
+        hints.add(hintTarget1);
+        if (hintTarget2 != null) {
+            hints.add(hintTarget2);
         }
+        mNineCardFragment.selectCard(hints);
     }
 
-    private void selectCard(int pos) {
-        CardViewData target = mCardViewList.get(pos);
-        if (target.mIsChecked) {
-            target.mIsChecked = false;
-            mCardLayout[pos].setBackgroundColor(mNotSelectedColor);
-            mSelectCount--;
-        } else {
-            target.mIsChecked = true;
-            mCardLayout[pos].setBackgroundColor(mSelectedColor);
-            mSelectCount++;
-
-            if (mSelectCount == 3) {
-                if (checkAnswer()) {
-                    addScore();
-                    setNotiImage(true);
-                    askQuestion();
-                } else {
-                    setNotiImage(false);
-                    initCardLayout();
-                }
-            }
-        }
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(KEY_REMAIN_TIME, mRemainTime);
-        outState.putInt(KEY_SCORE, mScore);
-        outState.putInt(KEY_HINT_COUNT, mHintCount);
-        //TODO save setItem as putSerializable
-    }
-
-    @Override
-    public void onClick(View view) {
-        int id = view.getId();
-        switch (id) {
-            case R.id.only_one_btn_hint:
-                selectHint();
-                break;
-        }
-    }
-
-
-    class CardClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            int id = view.getId();
-            int pos = 0;
-            switch (id) {
-                case R.id.only_one_card_image1: pos = 0; break;
-                case R.id.only_one_card_image2: pos = 1; break;
-                case R.id.only_one_card_image3: pos = 2; break;
-                case R.id.only_one_card_image4: pos = 3; break;
-                case R.id.only_one_card_image5: pos = 4; break;
-                case R.id.only_one_card_image6: pos = 5; break;
-                case R.id.only_one_card_image7: pos = 6; break;
-                case R.id.only_one_card_image8: pos = 7; break;
-                case R.id.only_one_card_image9: pos = 8; break;
-            }
-            selectCard(pos);
-        }
-    }
-
-    //TODO
+    //TODO using weakreference
     class TimerHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
