@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">SET</string>
+
+    <string name="main_btn_time">Time Attack Mode</string>
+    <string name="main_btn_vs">VS Mode</string>
+    <string name="main_btn_how">How To Play</string>
+    <string name="main_btn_rank">Rank</string>
+
+    <string name="ingame_score">Score</string>
+
+</resources>

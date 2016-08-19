@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="C:\Users\user\git\SET2\SET2\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="false"
+        revision="24.0.0"
+        sha1="9db91dd3accb8756fc44861e6fe63e44093d3b09">
+        <dex dex="C:\Users\user\git\SET2\SET2\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_ba04e9acaadeb5385263a806b2f159ea9484a8ce\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\user\git\SET2\SET2\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="false"
+        revision="24.0.0"
+        sha1="fce5bc17179ac36fb136e9fade8ea946da622bc3">
+        <dex dex="C:\Users\user\git\SET2\SET2\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_6707cd23f760ffcd89115611c0cd917f6d2f310d\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Android\android-sdk\extras\android\m2repository\com\android\support\support-annotations\24.1.1\support-annotations-24.1.1.jar"
+        jumboMode="true"
+        optimize="false"
+        revision="24.0.0"
+        sha1="3af19f153122737b372622fa6c81dd11a1c6b999">
+        <dex dex="C:\Users\user\git\SET2\SET2\app\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-24.1.1_c2f86e873210181380aaa49b2687cb54175349d4\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\user\git\SET2\SET2\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\24.1.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="false"
+        revision="24.0.0"
+        sha1="f62e763609f65e47dc6c498760a4accf02776788">
+        <dex dex="C:\Users\user\git\SET2\SET2\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-vector-drawable-24.1.1_0564acd77fcfae48f88fe83c0917c5ca60ca1e0b\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\user\git\SET2\SET2\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\24.1.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="false"
+        revision="24.0.0"
+        sha1="1256c10604bb098490eab070d76754ac5ceab35c">
+        <dex dex="C:\Users\user\git\SET2\SET2\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-appcompat-v7-24.1.1_8c37e89d330f3ac4f95b6a327839f966d1b14b3e\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\user\git\SET2\SET2\app\build\intermediates\exploded-aar\com.android.support\support-v4\24.1.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="false"
+        revision="24.0.0"
+        sha1="6d7d803871e3203465f71a163e7af104f807b446">
+        <dex dex="C:\Users\user\git\SET2\SET2\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v4-24.1.1_75b1c9dfc0ff385709834fd48c81a6bf0d76e5ea\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\user\git\SET2\SET2\app\build\intermediates\exploded-aar\com.android.support\support-v4\24.1.1\jars\libs\internal_impl-24.1.1.jar"
+        jumboMode="true"
+        optimize="false"
+        revision="24.0.0"
+        sha1="f78c2f395cb096f9dc1dc07e729922b8fcd3c4f5">
+        <dex dex="C:\Users\user\git\SET2\SET2\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-24.1.1_d5ca245aac7a7608e778a810e45aff9065f44b06\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\user\git\SET2\SET2\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\24.1.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="false"
+        revision="24.0.0"
+        sha1="c936c1bd42f0c018c18920c7bec619ef056b24f8">
+        <dex dex="C:\Users\user\git\SET2\SET2\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-animated-vector-drawable-24.1.1_920ddf0c5a5f0697b11edec0a19bb5c04318fe71\classes.dex" />
+    </item>
+
+</items>
