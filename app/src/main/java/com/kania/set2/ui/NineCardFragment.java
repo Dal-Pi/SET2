@@ -143,6 +143,9 @@ public class NineCardFragment extends Fragment implements View.OnClickListener {
             case R.id.ninecard_image_card7: pos = 6; break;
             case R.id.ninecard_image_card8: pos = 7; break;
             case R.id.ninecard_image_card9: pos = 8; break;
+            default:
+                Log.d("SET2", "error! invaild position");
+                return;
         }
         selectCard(pos);
     }
@@ -160,7 +163,6 @@ public class NineCardFragment extends Fragment implements View.OnClickListener {
         if (items.size() == NUM_ALL_CARDS) {
             initRandomAnswerColors();
             initCardViewData(items);
-            unselectAllCard();
             if (mCardType == CARD_TYPE_FILL_AS_COLOR) {
                 //TODO set as color
             } else { //mCardType == CARD_TYPE_FILL_AS_PATTERN
@@ -168,26 +170,6 @@ public class NineCardFragment extends Fragment implements View.OnClickListener {
             }
         } else {
             Log.e("SET2", "error! wrong number of items!");
-        }
-    }
-
-    /**
-     * Only can select maximum 2 items.
-     * @param items items to select.
-     */
-    public void selectCard(ArrayList<SetItemData> items) {
-        if (items == null || items.size() >= NUM_ANS_CARDS) {
-            Log.e("SET2", "error! items is wrong!");
-            return;
-        }
-
-        unselectAllCard();
-        for (SetItemData item : items) {
-            for (int i = 0; i < NUM_ALL_CARDS; ++i) {
-                if (item.isSameWith(mCardViewDataList[i].getmSetitemData())) {
-                    selectCard(i);
-                }
-            }
         }
     }
 
@@ -208,21 +190,50 @@ public class NineCardFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * Only can select maximum 2 items.
+     * @param items items to select.
+     */
+    public void selectMatchedCard(ArrayList<SetItemData> items) {
+        if (items == null || items.size() >= NUM_ANS_CARDS) {
+            Log.e("SET2", "error! items is wrong!");
+            return;
+        }
 
-    private void selectCard(int pos) {
-        CardViewData target = mCardViewDataList[pos];
+        unselectAllCard();
+        for (SetItemData item : items) {
+            for (int i = 0; i < NUM_ALL_CARDS; ++i) {
+                if (item.isSameWith(mCardViewDataList[i].getmSetitemData())) {
+                    selectCard(i);
+                }
+            }
+        }
+    }
+
+    public void selectCard(ArrayList<Integer> positions) {
+        if (positions.size() >= NUM_ANS_CARDS) {
+            Log.d("SET2", "do not try to select over 3 cards");
+        }
+        for (int pos : positions) {
+            selectCard(pos);
+        }
+    }
+
+    public void selectCard(int position) {
+        mCallback.onSelectCard(position);
+        CardViewData target = mCardViewDataList[position];
         if (target.mIsChecked) {
             target.mIsChecked = false;
-            mCardLayouts[pos].setBackgroundColor(mNotSelectedColor);
+            mCardLayouts[position].setBackgroundColor(mNotSelectedColor);
             if (mNumberVisible) {
-                mCardNumbers[pos].setTextColor(mSelectedColor);
+                mCardNumbers[position].setTextColor(mSelectedColor);
             }
             mSelectCount--;
         } else {
             target.mIsChecked = true;
-            mCardLayouts[pos].setBackgroundColor(mSelectedColor);
+            mCardLayouts[position].setBackgroundColor(mSelectedColor);
             if (mNumberVisible) {
-                mCardNumbers[pos].setTextColor(mNotSelectedColor);
+                mCardNumbers[position].setTextColor(mNotSelectedColor);
             }
             mSelectCount++;
 
@@ -276,6 +287,7 @@ public class NineCardFragment extends Fragment implements View.OnClickListener {
 
     public interface OnSelectThreeCardListener {
         void onThreeCardSelected(ArrayList<SetItemData> selectedList);
+        void onSelectCard(int position);
     }
 
     class CardViewData {

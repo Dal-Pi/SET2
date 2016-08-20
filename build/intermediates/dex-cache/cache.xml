@@ -7,7 +7,7 @@
         jumboMode="true"
         optimize="false"
         revision="24.0.0"
-        sha1="5781740caaeac2cf112039c68911ff87a378b8a7">
+        sha1="85094034af22a218942cb9b014aaec67415bc5a6">
         <dex dex="C:\Users\user\git\SET2\SET2\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_ba04e9acaadeb5385263a806b2f159ea9484a8ce\classes.dex" />
     </item>
     <item
@@ -30,21 +30,21 @@
     </item>
     <item
         is-multidex="true"
-        jar="C:\Users\user\git\SET2\SET2\app\build\intermediates\exploded-aar\com.android.support\support-v4\24.1.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="false"
-        revision="24.0.0"
-        sha1="6d7d803871e3203465f71a163e7af104f807b446">
-        <dex dex="C:\Users\user\git\SET2\SET2\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v4-24.1.1_75b1c9dfc0ff385709834fd48c81a6bf0d76e5ea\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="C:\Users\user\git\SET2\SET2\app\build\intermediates\exploded-aar\com.android.support\support-v4\24.1.1\jars\libs\internal_impl-24.1.1.jar"
         jumboMode="true"
         optimize="false"
         revision="24.0.0"
         sha1="f78c2f395cb096f9dc1dc07e729922b8fcd3c4f5">
         <dex dex="C:\Users\user\git\SET2\SET2\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-24.1.1_d5ca245aac7a7608e778a810e45aff9065f44b06\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\user\git\SET2\SET2\app\build\intermediates\exploded-aar\com.android.support\support-v4\24.1.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="false"
+        revision="24.0.0"
+        sha1="6d7d803871e3203465f71a163e7af104f807b446">
+        <dex dex="C:\Users\user\git\SET2\SET2\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v4-24.1.1_75b1c9dfc0ff385709834fd48c81a6bf0d76e5ea\classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -61,7 +61,7 @@
         jumboMode="true"
         optimize="false"
         revision="24.0.0"
-        sha1="ec8d32977282d2316abad7e0535b7e3426b64a23">
+        sha1="6f05bf1fefae42af9a7a9e34b70c2978cb05efd9">
         <dex dex="C:\Users\user\git\SET2\SET2\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_6707cd23f760ffcd89115611c0cd917f6d2f310d\classes.dex" />
     </item>
     <item
