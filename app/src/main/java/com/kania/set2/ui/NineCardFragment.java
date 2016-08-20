@@ -90,6 +90,10 @@ public class NineCardFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //test start
+//        Log.d("SET2", "size of container : " + container.getWidth() + " / " + container.getHeight());
+
+        //test end
         View view = inflater.inflate(R.layout.fragment_ninecard, container, false);
         initView(view);
         return view;

@@ -7,18 +7,12 @@
     tools:context="com.kania.set2.ui.NineCardFragment">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         style="@style/nineCardLayoutRowStyle">
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/ninecard_layout_card1"
             style="@style/nineCardCardLayoutStyle">
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/ninecard_image_card1"
                 style="@style/nineCardCardImageStyle"/>
             <TextView
@@ -28,13 +22,11 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/ninecard_layout_card2"
             style="@style/nineCardCardLayoutStyle">
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:id="@+id/ninecard_image_card2"
                 style="@style/nineCardCardImageStyle"/>
             <TextView
@@ -44,13 +36,11 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/ninecard_layout_card3"
             style="@style/nineCardCardLayoutStyle">
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:id="@+id/ninecard_image_card3"
                 style="@style/nineCardCardImageStyle"/>
             <TextView
@@ -61,18 +51,12 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         style="@style/nineCardLayoutRowStyle">
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/ninecard_layout_card4"
             style="@style/nineCardCardLayoutStyle">
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/ninecard_image_card4"
                 style="@style/nineCardCardImageStyle"/>
             <TextView
@@ -82,13 +66,9 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/ninecard_layout_card5"
             style="@style/nineCardCardLayoutStyle">
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/ninecard_image_card5"
                 style="@style/nineCardCardImageStyle"/>
             <TextView
@@ -98,13 +78,9 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/ninecard_layout_card6"
             style="@style/nineCardCardLayoutStyle">
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/ninecard_image_card6"
                 style="@style/nineCardCardImageStyle"/>
             <TextView
@@ -115,18 +91,12 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         style="@style/nineCardLayoutRowStyle">
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/ninecard_layout_card7"
             style="@style/nineCardCardLayoutStyle">
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/ninecard_image_card7"
                 style="@style/nineCardCardImageStyle"/>
             <TextView
@@ -137,12 +107,12 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:id="@+id/ninecard_layout_card8"
             style="@style/nineCardCardLayoutStyle">
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:id="@+id/ninecard_image_card8"
                 style="@style/nineCardCardImageStyle"/>
             <TextView
@@ -153,12 +123,12 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:id="@+id/ninecard_layout_card9"
             style="@style/nineCardCardLayoutStyle">
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:id="@+id/ninecard_image_card9"
                 style="@style/nineCardCardImageStyle"/>
             <TextView
