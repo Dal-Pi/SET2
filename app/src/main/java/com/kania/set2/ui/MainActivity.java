@@ -8,11 +8,20 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.kania.set2.R;
+import com.kania.set2.model.SetContract;
 import com.kania.set2.util.RandomNumberUtil;
 
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private static final int STATE_MAIN_BUTTONS = 1;
+    private static final int STATE_TIMEATTACK_BUTTONS = 2;
+
+    private int mState;
+
+    private ViewGroup mLayoutMainButtons;
+    private ViewGroup mLayoutTimeAttackButtons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,10 +30,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         setTitleBGColor();
 
+        mLayoutMainButtons = (ViewGroup)findViewById(R.id.main_layout_main_buttons);
+        mLayoutTimeAttackButtons = (ViewGroup)findViewById(
+                R.id.main_layout_timeattack_buttons);
+
         findViewById(R.id.main_buttons_btn_timeattack).setOnClickListener(this);
         findViewById(R.id.main_buttons_btn_vsmode).setOnClickListener(this);
         findViewById(R.id.main_buttons_btn_howtoplay).setOnClickListener(this);
         findViewById(R.id.main_buttons_btn_rank).setOnClickListener(this);
+
+        findViewById(R.id.main_buttons_btn_easy).setOnClickListener(this);
+        findViewById(R.id.main_buttons_btn_hard).setOnClickListener(this);
+        mState = STATE_MAIN_BUTTONS;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        returnMainState();
     }
 
     private void setTitleBGColor() {
@@ -43,7 +66,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = null;
         switch (id) {
             case R.id.main_buttons_btn_timeattack:
-                intent = new Intent(this, TimeAttackActivity.class);
+                mLayoutMainButtons.setVisibility(View.GONE);
+                mLayoutTimeAttackButtons.setVisibility(View.VISIBLE);
+                mState = STATE_TIMEATTACK_BUTTONS;
                 break;
             case R.id.main_buttons_btn_vsmode:
                 //TODO not implement yet
@@ -54,13 +79,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(this, "not implemented yet", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.main_buttons_btn_rank:
-                //TODO not implement yet
-                Toast.makeText(this, "not implemented yet", Toast.LENGTH_SHORT).show();
+                intent = new Intent(this, RankActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.main_buttons_btn_easy:
+                intent = new Intent(this, TimeAttackActivity.class);
+                intent.putExtra(SetContract.EXTRA_DIFFICULTY, SetContract.DIFFICULTY_EASY);
+                startActivity(intent);
+                break;
+            case R.id.main_buttons_btn_hard:
+                intent = new Intent(this, TimeAttackActivity.class);
+                intent.putExtra(SetContract.EXTRA_DIFFICULTY, SetContract.DIFFICULTY_HARD);
+                startActivity(intent);
                 break;
         }
-        if (intent != null) {
-            startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mState == STATE_TIMEATTACK_BUTTONS) {
+            returnMainState();
+        } else {
+            super.onBackPressed();
         }
+    }
+
+    private void returnMainState() {
+        mLayoutTimeAttackButtons.setVisibility(View.GONE);
+        mLayoutMainButtons.setVisibility(View.VISIBLE);
+        mState = STATE_MAIN_BUTTONS;
     }
 }
 

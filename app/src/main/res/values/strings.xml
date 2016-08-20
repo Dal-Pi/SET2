@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">SET</string>
 
+    <string name="easy">Easy</string>
+    <string name="hard">Hard</string>
+    <string name="unknown_player">unknown</string>
+
     <string name="main_btn_time">Time Attack Mode</string>
     <string name="main_btn_vs">VS Mode</string>
     <string name="main_btn_how">How To Play</string>
@@ -11,6 +15,7 @@
     <string name="timeattack_text_hint">Hint</string>
     <string name="timeattack_text_result">Your Score is</string>
     <string name="timeattack_text_register">Register</string>
+    <string name="timeattack_text_name">Input name</string>
 
     <string name="ninecard_number_1">1</string>
     <string name="ninecard_number_2">2</string>
@@ -22,7 +27,11 @@
     <string name="ninecard_number_8">8</string>
     <string name="ninecard_number_9">9</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="rank_text_title">RANK</string>
+    <string name="rank_text_rank">Rank</string>
+    <string name="rank_text_name">Name</string>
+    <string name="rank_text_score">Score</string>
+    <string name="rank_text_date">Date</string>
+    <string name="rank_text_exit">exit</string>
 
 </resources>

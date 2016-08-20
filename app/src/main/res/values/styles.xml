@@ -43,7 +43,7 @@
         <item name="android:layout_alignParentTop">true</item>
         <item name="android:layout_alignParentLeft">true</item>
         <item name="android:layout_margin">@dimen/only_one_margin_card_text</item>
-        <item name="android:textColor">@color/base_darkgray</item>
+        <item name="android:textColor">@color/base_white</item>
     </style>
 
 </resources>

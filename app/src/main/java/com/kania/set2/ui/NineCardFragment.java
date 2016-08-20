@@ -182,7 +182,7 @@ public class NineCardFragment extends Fragment implements View.OnClickListener {
             mCardViewDataList[i].mIsChecked = false;
             mCardLayouts[i].setBackgroundColor(mNotSelectedColor);
             if (mNumberVisible) {
-                mCardNumbers[i].setTextColor(mSelectedColor);
+                mCardNumbers[i].setTextColor(mNotSelectedColor);
             }
         }
         mSelectCount = 0;
@@ -230,14 +230,14 @@ public class NineCardFragment extends Fragment implements View.OnClickListener {
             target.mIsChecked = false;
             mCardLayouts[position].setBackgroundColor(mNotSelectedColor);
             if (mNumberVisible) {
-                mCardNumbers[position].setTextColor(mSelectedColor);
+                mCardNumbers[position].setTextColor(mNotSelectedColor);
             }
             mSelectCount--;
         } else {
             target.mIsChecked = true;
             mCardLayouts[position].setBackgroundColor(mSelectedColor);
             if (mNumberVisible) {
-                mCardNumbers[position].setTextColor(mNotSelectedColor);
+                mCardNumbers[position].setTextColor(mSelectedColor);
             }
             mSelectCount++;
 

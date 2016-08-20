@@ -30,7 +30,11 @@
         android:layout_weight="1"
         android:gravity="center_horizontal|top">
 
-        <include layout="@layout/activity_main_buttons"/>
+        <include android:id="@+id/main_layout_main_buttons"
+            layout="@layout/activity_main_buttons"/>
+        <include android:id="@+id/main_layout_timeattack_buttons"
+            layout="@layout/activity_main_timeattack_diff"
+            android:visibility="gone"/>
 
     </RelativeLayout>
 </LinearLayout>

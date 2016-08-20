@@ -30,22 +30,23 @@
                 <FrameLayout
                     android:id="@+id/timeattack_container_answer"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_centerInParent="true" />
 
                 <LinearLayout
                     android:id="@+id/timeattack_layout_result"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:visibility="gone">
-                    <TextView
-                        android:id="@+id/timeattack_text_result"
-                        android:layout_width="wrap_content"
+                    <EditText
+                        android:id="@+id/timeattack_edit_name"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="end game"/>
+                        android:lines="1"
+                        android:hint="@string/timeattack_text_name"/>
                     <Button
                         android:id="@+id/timeattack_btn_register"
                         android:layout_width="wrap_content"

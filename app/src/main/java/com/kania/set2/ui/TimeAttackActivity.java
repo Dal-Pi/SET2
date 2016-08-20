@@ -8,17 +8,20 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kania.set2.R;
+import com.kania.set2.model.SetContract;
+import com.kania.set2.model.SetRankData;
 import com.kania.set2.util.RandomNumberUtil;
 import com.kania.set2.model.SetItemData;
 import com.kania.set2.model.SetVerifier;
+import com.kania.set2.util.SetRankUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,14 +32,14 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
     private static final int NUM_ALL_CARDS = 9;
     private static final int NUM_ANS_CARDS = 3;
 
-    public static final int GAME_TIME = 61;
+    public static final int GAME_TIME = 3;
     public static final int POINT_USE_NO_HINT = 3;
     public static final int POINT_USE_HINT1 = 1;
     public static final int POINT_USE_HINT2 = 0;
 
-    public static final String KEY_DIFFICULTY = "difficulty";
-    public static final int DIFFICULTY_EASY = 1;
-    public static final int DIFFICULTY_HARD = 2;
+    public static final String KEY_DIFFICULTY = SetContract.EXTRA_DIFFICULTY;
+    public static final int DIFFICULTY_EASY = SetContract.DIFFICULTY_EASY;
+    public static final int DIFFICULTY_HARD = SetContract.DIFFICULTY_HARD;
 
     public static final String KEY_REMAIN_TIME = "saved_remain_time";
     public static final String KEY_SCORE = "saved_score";
@@ -70,11 +73,11 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
 
     //layout
     private ViewGroup mResultLayout;
-    private TextView mTextResult;
     private TextView mTextRemainTime;
     private TextView mTextScore;
     private TextView mTextScorePlus;
     private Button mBtnHint;
+    private EditText mEditName;
     private Button mBtnRegister;
 
     //timer handler
@@ -154,6 +157,9 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
             case R.id.timeattack_btn_hint:
                 selectHint();
                 break;
+            case R.id.timeattack_btn_register:
+                checkNewRank();
+                break;
         }
     }
 
@@ -172,13 +178,14 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
 
     private void initViews() {
         mResultLayout = (ViewGroup)findViewById(R.id.timeattack_layout_result);
-        mTextResult = (TextView)findViewById(R.id.timeattack_text_result);
-        mBtnRegister = (Button)findViewById(R.id.timeattack_btn_register);
         mTextRemainTime = (TextView)findViewById(R.id.timeattack_text_remain);
         mTextScore = (TextView)findViewById(R.id.timeattack_text_score);
         mTextScorePlus = (TextView)findViewById(R.id.timeattack_text_plus_score);
         mBtnHint = (Button)findViewById(R.id.timeattack_btn_hint);
         mBtnHint.setOnClickListener(this);
+        mEditName = (EditText)findViewById(R.id.timeattack_edit_name);
+        mBtnRegister = (Button)findViewById(R.id.timeattack_btn_register);
+        mBtnRegister.setOnClickListener(this);
     }
 
     private void initTools() {
@@ -436,9 +443,6 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
 
     private void endGame() {
         mAnswerImageFragment.setVisible(false);
-        //TODO remove?
-        mTextResult.setText(getResources().getText(R.string.timeattack_text_result)
-                .toString() + " " + mScore);
         mResultLayout.setVisibility(View.VISIBLE);
         mTextRemainTime.setText(getResources().getText(R.string.timeattack_text_end));
         mBtnHint.setEnabled(false);
@@ -467,6 +471,41 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
         }
         mSelectedPositionList.clear();
         mNineCardFragment.selectMatchedCard(hints);
+    }
+
+    private void checkNewRank() {
+        SetRankUtil rankUtil = SetRankUtil.getInstance(this);
+        Calendar calendar = Calendar.getInstance();
+        SetRankData newData = new SetRankData();
+        String playerName = mEditName.getText().toString();
+        if (playerName != null && playerName.isEmpty()) {
+            playerName = getResources().getString(R.string.unknown_player);
+        }
+        newData.name = playerName;
+        newData.score = mScore;
+        newData.date = calendar.getTimeInMillis();
+        newData.difficulty = mDifficulty;
+
+        ArrayList<SetRankData> preRank = rankUtil.getRankList(mDifficulty);
+        int rank = 0;
+        for (rank = 0; rank < preRank.size(); ++rank) {
+            if (rank > SetContract.MAX_RANK_EACH) {
+                break;
+            }
+            SetRankData data = preRank.get(rank);
+            if (data.score < newData.score) {
+                break;
+            }
+        }
+        if (rank <= SetContract.MAX_RANK_EACH) {
+            rankUtil.addNewRank(newData);
+        }
+
+        Intent rankIntent = new Intent(this, RankActivity.class);
+        rankIntent.putExtra(SetContract.EXTRA_NEW_RANK, newData);
+        rankIntent.putExtra(SetContract.EXTRA_DIFFICULTY, mDifficulty);
+        startActivity(rankIntent);
+        finish();
     }
 
     //TODO using weakreference
