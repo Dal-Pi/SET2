@@ -34,4 +34,10 @@
     <string name="rank_text_date">Date</string>
     <string name="rank_text_exit">exit</string>
 
+    <string name="vs_text_stage">Stage</string>
+    <string name="vs_text_player">Player</string>
+    <string name="vs_text_score">Score</string>
+    <string name="vs_btn_set">Set</string>
+    <string name="vs_btn_complete">Complete</string>
+
 </resources>

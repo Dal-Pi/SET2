@@ -17,6 +17,7 @@
         </activity>
         <activity android:name=".ui.TimeAttackActivity"></activity>
         <activity android:name=".ui.RankActivity"></activity>
+        <activity android:name=".ui.VsModeActivity"></activity>
     </application>
 
 </manifest>
