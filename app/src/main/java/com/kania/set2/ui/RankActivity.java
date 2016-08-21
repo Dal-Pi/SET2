@@ -2,6 +2,7 @@ package com.kania.set2.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,15 +18,18 @@ import android.widget.TextView;
 import com.kania.set2.R;
 import com.kania.set2.model.SetContract;
 import com.kania.set2.model.SetRankData;
+import com.kania.set2.util.RandomNumberUtil;
 import com.kania.set2.util.SetRankUtil;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class RankActivity extends AppCompatActivity implements View.OnClickListener {
 
-    public static final String KEY_DIFFICULTY = SetContract.EXTRA_DIFFICULTY;
+    public static final String EXTRA_DIFFICULTY = SetContract.EXTRA_DIFFICULTY;
+    public static final String EXTRA_NEW_RANK = SetContract.EXTRA_NEW_RANK;
+    public static final String KEY_DIFFICULTY = "saved_difficulty";
+    public static final String KEY_NEW_RANK = "saved_new_rank";
     public static final int DIFFICULTY_EASY = SetContract.DIFFICULTY_EASY;
     public static final int DIFFICULTY_HARD = SetContract.DIFFICULTY_HARD;
 
@@ -37,7 +41,10 @@ public class RankActivity extends AppCompatActivity implements View.OnClickListe
 
     private RankAdapter mAdapter;
 
+    private SetRankData mNewRankData;
     private int mDifficulty;
+    private int mBasicColor;
+    private int mNewColor;
 
     private ArrayList<SetRankData> mPreRankEasy;
     private ArrayList<SetRankData> mPreRankHard;
@@ -56,53 +63,135 @@ public class RankActivity extends AppCompatActivity implements View.OnClickListe
         mListRank = (ListView)findViewById(R.id.rank_list_ranklist);
         mBtnExit = (Button)findViewById(R.id.rank_btn_exit);
         mBtnExit.setOnClickListener(this);
+        mBasicColor = getResources().getColor(R.color.base_darkgray);
 
         mPreRankEasy = SetRankUtil.getInstance(this).getRankList(DIFFICULTY_EASY);
         mPreRankHard = SetRankUtil.getInstance(this).getRankList(DIFFICULTY_HARD);
 
         Intent intent = getIntent();
         if (intent != null) {
-            mDifficulty = intent.getIntExtra(KEY_DIFFICULTY, DIFFICULTY_HARD);
+            mDifficulty = intent.getIntExtra(EXTRA_DIFFICULTY, DIFFICULTY_HARD);
+            mNewRankData = (SetRankData)intent.getSerializableExtra(EXTRA_NEW_RANK);
         } else {
             mDifficulty = DIFFICULTY_EASY;
         }
 
+        if (savedInstanceState != null) {
+            mDifficulty = savedInstanceState.getInt(KEY_DIFFICULTY);
+            mNewRankData = (SetRankData)savedInstanceState.getSerializable(KEY_NEW_RANK);
+        }
+        setTitle();
+
+        addNewRankIfScope();
+
         ArrayList<SetRankData> adapterDate = new ArrayList<>();
         if (mDifficulty == DIFFICULTY_EASY) {
-            for (SetRankData data : mPreRankEasy) {
-                adapterDate.add(data);
-            }
+            adapterDate.addAll(mPreRankEasy);
         } else {
-            for (SetRankData data : mPreRankHard) {
-                adapterDate.add(data);
-            }
+            adapterDate.addAll(mPreRankHard);
         }
         mAdapter = new RankAdapter(this, R.layout.item_rank, adapterDate);
         mListRank.setAdapter(mAdapter);
     }
 
-    //TODO get New rank and noti
-    
-    //TODO saveInstance
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mNewRankData != null) {
+            ArrayList<SetRankData> targetList;
+            if (mDifficulty == DIFFICULTY_EASY) {
+                targetList = mPreRankEasy;
+            } else {
+                targetList = mPreRankHard;
+            }
+
+            int position = 0;
+            for (int i = 0; i < targetList.size(); ++i) {
+                if (targetList.get(i).date == mNewRankData.date) {
+                    position = i;
+                    break;
+                }
+            }
+            mListRank.setSelection(position);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_DIFFICULTY, mDifficulty);
+        if (mNewRankData != null) {
+            outState.putSerializable(KEY_NEW_RANK, mNewRankData);
+        }
+    }
 
     @Override
     public void onClick(View view) {
         int id = view.getId();
         switch (id) {
             case R.id.rank_btn_easy:
-                mAdapter.clear();
-                mAdapter.addAll(mPreRankEasy);
-                mAdapter.notifyDataSetChanged();
+                mDifficulty = DIFFICULTY_EASY;
+                changeList();
                 break;
             case R.id.rank_btn_hard:
-                mAdapter.clear();
-                mAdapter.addAll(mPreRankHard);
-                mAdapter.notifyDataSetChanged();
+                mDifficulty = DIFFICULTY_HARD;
+                changeList();
                 break;
             case R.id.rank_btn_exit:
                 finish();
                 break;
         }
+    }
+
+    private void addNewRankIfScope() {
+        if (mNewRankData == null) {
+            return;
+        }
+        ArrayList<SetRankData> targetList;
+        if (mDifficulty == DIFFICULTY_EASY) {
+            targetList = mPreRankEasy;
+        } else {
+            targetList = mPreRankHard;
+        }
+
+        boolean isRankInList = false;
+        for (SetRankData data : targetList) {
+            if (data.date == mNewRankData.date) {
+                isRankInList = true;
+                break;
+            }
+        }
+        if (!isRankInList && mNewRankData.difficulty == mDifficulty) {
+            targetList.add(mNewRankData);
+        }
+        int[] colors = getResources().getIntArray(R.array.pastelColors);
+        int randomIndex = RandomNumberUtil.getInstance(mNewRankData.date)
+                .getRandomNumber(colors.length);
+        mNewColor = colors[randomIndex];
+    }
+
+    private void changeList() {
+        mAdapter.clear();
+        if (mDifficulty == DIFFICULTY_EASY) {
+            mAdapter.addAll(mPreRankEasy);
+        } else {
+            mAdapter.addAll(mPreRankHard);
+        }
+        mAdapter.notifyDataSetChanged();
+        setTitle();
+    }
+
+    private void setTitle() {
+        StringBuffer stringBuffer = new StringBuffer();
+        Resources resouces = getResources();
+        stringBuffer.append(resouces.getString(R.string.rank_text_title)).append("(");
+        if (mDifficulty == DIFFICULTY_EASY) {
+            stringBuffer.append(resouces.getString(R.string.easy));
+        } else {
+            stringBuffer.append(resouces.getString(R.string.hard));
+        }
+        stringBuffer.append(")");
+        mTextTitle.setText(stringBuffer.toString());
     }
 
     class RankAdapter extends ArrayAdapter<SetRankData> {
@@ -131,6 +220,17 @@ public class RankActivity extends AppCompatActivity implements View.OnClickListe
             date.setText(DateUtils.formatDateTime(getContext(), data.date,
                     DateUtils.FORMAT_SHOW_YEAR | DateUtils.FORMAT_SHOW_DATE
                             | DateUtils.FORMAT_NUMERIC_DATE));
+            if (mNewRankData != null && mNewRankData.date == data.date) {
+                rank.setTextColor(mNewColor);
+                name.setTextColor(mNewColor);
+                score.setTextColor(mNewColor);
+                date.setTextColor(mNewColor);
+            } else {
+                rank.setTextColor(mBasicColor);
+                name.setTextColor(mBasicColor);
+                score.setTextColor(mBasicColor);
+                date.setTextColor(mBasicColor);
+            }
 
             return view;
         }

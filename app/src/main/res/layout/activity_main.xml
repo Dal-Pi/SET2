@@ -4,6 +4,7 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/base_white"
     android:orientation="vertical"
     tools:context="com.kania.set2.ui.MainActivity">
 

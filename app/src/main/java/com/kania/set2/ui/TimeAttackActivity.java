@@ -32,7 +32,7 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
     private static final int NUM_ALL_CARDS = 9;
     private static final int NUM_ANS_CARDS = 3;
 
-    public static final int GAME_TIME = 3;
+    public static final int GAME_TIME = 61;
     public static final int POINT_USE_NO_HINT = 3;
     public static final int POINT_USE_HINT1 = 1;
     public static final int POINT_USE_HINT2 = 0;

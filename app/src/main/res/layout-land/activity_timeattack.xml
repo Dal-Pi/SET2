@@ -45,7 +45,8 @@
                         android:id="@+id/timeattack_edit_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:lines="1"
+                        android:inputType="text"
+                        android:maxLines="1"
                         android:hint="@string/timeattack_text_name"/>
                     <Button
                         android:id="@+id/timeattack_btn_register"
