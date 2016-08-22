@@ -18,12 +18,22 @@
             android:text="@string/vs_text_stage"/>
     </RelativeLayout>
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="horizontal"
         android:layout_weight="1">
 
-    </FrameLayout>
+        <FrameLayout
+            android:id="@+id/vs_container_ninecard"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </FrameLayout>
+
+
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,22 +46,102 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1">
-            <include
-                android:id="@+id/vs_layout_player1"
-                layout="@layout/activity_vs_player"/>
+            <LinearLayout
+                android:id="@+id/vs_player_layout_buttons_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/vs_player_btn_set_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="0dp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:text="@string/vs_btn_set"
+                    android:enabled="false"/>
+                <Button
+                    android:id="@+id/vs_player_btn_complete_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="0dp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:text="@string/vs_btn_complete"
+                    android:enabled="false"/>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/vs_player_layout_score_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/vs_player_layout_buttons_1">
+                <TextView
+                    android:id="@+id/vs_player_text_score_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/vs_text_score"/>
+                <TextView
+                    android:id="@+id/vs_player_text_score_plus_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/vs_player_text_score_1"
+                    android:layout_centerVertical="true"
+                    android:text="+"/>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/vs_player_text_remain_time_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_above="@id/vs_player_layout_score_1"
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+            <Button
+                android:id="@+id/vs_player_btn_name_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_above="@id/vs_player_text_remain_time_1"
+                android:text="@string/vs_text_player"
+                android:enabled="false"/>
+
+            <TextView
+                android:id="@+id/vs_player_text_name_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_above="@id/vs_player_text_remain_time_1"
+                android:visibility="invisible"/>
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/vs_container_answer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1">
             <FrameLayout
+                android:id="@+id/vs_container_answer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true">
+                android:layout_centerInParent="true"
+                android:visibility="invisible">
 
             </FrameLayout>
+
+            <Button
+                android:id="@+id/vs_btn_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/vs_btn_start">
+
+            </Button>
 
         </RelativeLayout>
 
@@ -59,9 +149,79 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1">
-            <include
-                android:id="@+id/vs_layout_player2"
-                layout="@layout/activity_vs_player"/>
+            <LinearLayout
+                android:id="@+id/vs_player_layout_buttons_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/vs_player_btn_set_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="0dp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:text="@string/vs_btn_set"
+                    android:enabled="false"/>
+                <Button
+                    android:id="@+id/vs_player_btn_complete_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="0dp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:text="@string/vs_btn_complete"
+                    android:enabled="false"/>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/vs_player_layout_score_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/vs_player_layout_buttons_2">
+                <TextView
+                    android:id="@+id/vs_player_text_score_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/vs_text_score"/>
+                <TextView
+                    android:id="@+id/vs_player_text_score_plus_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/vs_player_text_score_2"
+                    android:layout_centerVertical="true"
+                    android:text="+"/>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/vs_player_text_remain_time_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_above="@id/vs_player_layout_score_2"
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+            <Button
+                android:id="@+id/vs_player_btn_name_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_above="@id/vs_player_text_remain_time_2"
+                android:text="@string/vs_text_player"
+                android:enabled="false"/>
+
+            <TextView
+                android:id="@+id/vs_player_text_name_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_above="@id/vs_player_text_remain_time_2"
+                android:visibility="invisible"/>
 
         </RelativeLayout>
 

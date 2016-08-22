@@ -172,7 +172,6 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.timeattack_container_answer, mAnswerImageFragment);
         fragmentTransaction.add(R.id.timeattack_container_ninecard, mNineCardFragment);
-        //TODO add score framgent
         fragmentTransaction.commit();
     }
 
