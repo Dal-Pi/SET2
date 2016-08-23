@@ -37,6 +37,7 @@
     <string name="vs_text_stage">Stage</string>
     <string name="vs_text_player">Player</string>
     <string name="vs_text_score">Score</string>
+    <string name="vs_text_title_start">Select Start</string>
     <string name="vs_btn_set">Set</string>
     <string name="vs_btn_complete">Complete</string>
     <string name="vs_btn_start">Start</string>
