@@ -4,6 +4,8 @@
     <string name="easy">Easy</string>
     <string name="hard">Hard</string>
     <string name="unknown_player">unknown</string>
+    <string name="text_ok">OK</string>
+    <string name="text_cancel">Cancel</string>
 
     <string name="main_btn_time">Time Attack Mode</string>
     <string name="main_btn_vs">VS Mode</string>
@@ -36,6 +38,7 @@
 
     <string name="vs_text_stage">Stage</string>
     <string name="vs_text_player">Player</string>
+    <string name="vs_text_player_hint">Player Name</string>
     <string name="vs_text_score">Score</string>
     <string name="vs_text_title_start">Select Start</string>
     <string name="vs_btn_set">Set</string>

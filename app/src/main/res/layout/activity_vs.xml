@@ -69,7 +69,8 @@
                     android:maxLines="1"
                     android:ellipsize="end"
                     android:text="@string/vs_btn_set"
-                    android:enabled="false"/>
+                    android:enabled="false"
+                    android:visibility="invisible"/>
                 <Button
                     android:id="@+id/vs_player_btn_complete_1"
                     android:layout_width="match_parent"
@@ -79,7 +80,8 @@
                     android:maxLines="1"
                     android:ellipsize="end"
                     android:text="@string/vs_btn_complete"
-                    android:enabled="false"/>
+                    android:enabled="false"
+                    android:visibility="invisible"/>
             </LinearLayout>
 
             <RelativeLayout
@@ -93,7 +95,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="0"/>
+                    android:text=""
+                    android:visibility="invisible"/>
                 <TextView
                     android:id="@+id/vs_player_text_score_plus_1"
                     android:layout_width="wrap_content"
@@ -102,7 +105,8 @@
                     android:layout_centerVertical="true"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/answer_red"
-                    android:text=""/>
+                    android:text=""
+                    android:visibility="invisible"/>
             </RelativeLayout>
 
             <TextView
@@ -111,7 +115,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_above="@id/vs_player_layout_score_1"
-                android:textAppearance="?android:attr/textAppearanceLarge"/>
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:visibility="invisible"/>
 
             <Button
                 android:id="@+id/vs_player_btn_name_1"
@@ -120,7 +125,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_above="@id/vs_player_text_remain_time_1"
                 android:text="@string/vs_text_player"
-                android:enabled="false"/>
+                android:maxLines="1" />
 
             <TextView
                 android:id="@+id/vs_player_text_name_1"
@@ -129,6 +134,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_above="@id/vs_player_text_remain_time_1"
                 android:textAppearance="?android:attr/textAppearanceLarge"
+                android:maxLines="1"
                 android:visibility="invisible"/>
         </RelativeLayout>
 
@@ -176,7 +182,8 @@
                     android:maxLines="1"
                     android:ellipsize="end"
                     android:text="@string/vs_btn_set"
-                    android:enabled="false"/>
+                    android:enabled="false"
+                    android:visibility="invisible"/>
                 <Button
                     android:id="@+id/vs_player_btn_complete_2"
                     android:layout_width="match_parent"
@@ -186,7 +193,8 @@
                     android:maxLines="1"
                     android:ellipsize="end"
                     android:text="@string/vs_btn_complete"
-                    android:enabled="false"/>
+                    android:enabled="false"
+                    android:visibility="invisible"/>
             </LinearLayout>
 
             <RelativeLayout
@@ -200,7 +208,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="0"/>
+                    android:text=""
+                    android:visibility="invisible"/>
                 <TextView
                     android:id="@+id/vs_player_text_score_plus_2"
                     android:layout_width="wrap_content"
@@ -209,7 +218,8 @@
                     android:layout_centerVertical="true"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/answer_red"
-                    android:text=""/>
+                    android:text=""
+                    android:visibility="invisible"/>
             </RelativeLayout>
 
             <TextView
@@ -218,7 +228,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_above="@id/vs_player_layout_score_2"
-                android:textAppearance="?android:attr/textAppearanceLarge"/>
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:visibility="invisible"/>
 
             <Button
                 android:id="@+id/vs_player_btn_name_2"
@@ -227,7 +238,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_above="@id/vs_player_text_remain_time_2"
                 android:text="@string/vs_text_player"
-                android:enabled="false"/>
+                android:maxLines="1" />
 
             <TextView
                 android:id="@+id/vs_player_text_name_2"
@@ -236,6 +247,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_above="@id/vs_player_text_remain_time_2"
                 android:textAppearance="?android:attr/textAppearanceLarge"
+                android:maxLines="1"
                 android:visibility="invisible"/>
 
         </RelativeLayout>
