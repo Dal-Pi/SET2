@@ -11,16 +11,19 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.kania.set2.R;
 import com.kania.set2.model.SetItemData;
 import com.kania.set2.model.SetVerifier;
 import com.kania.set2.util.RandomNumberUtil;
+import com.kania.set2.util.ViewUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -74,7 +77,7 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
     private int[] mAllItemListSequence;
     private HashMap<String, SetAnswerData> mAnswerMap;
     private ArrayList<SetItemData> mDeckList;
-    private ArrayList<Integer> mSelectedPositionList;
+    private ArrayList<Integer> mSelectedPositionList = new ArrayList<>(); //TODO why?
     private ArrayList<Integer> mSavedSelectedPositionList;
     private int mNowGameState;
     private ArrayList<PlayerData> mPlayers;
@@ -100,10 +103,10 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
 
         mSetTimerHandler = new SetHandler();
 
-        getComponents();
+        initViews();
         initCards();
         if (savedInstanceState == null) {
-            initPlayerData();
+            initGameData();
             initGameState();
             renewViews();
         } else {
@@ -226,9 +229,59 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
         addScore(NUM_SCORE_COMPLETE_SUCCEED);
         setNotiImage(true);
 
-        startNewStage();
-        mNowGameState = GAME_STATE_READY;
-        renewViews();
+        if (mStage < NUM_MAX_STAGE) {
+            startNewStage();
+            mNowGameState = GAME_STATE_READY;
+            renewViews();
+        } else {
+            showResultDialog();
+        }
+    }
+
+    private void showResultDialog() {
+        LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
+        LinearLayout layout = (LinearLayout)inflater.inflate(R.layout.dialog_vs_result, null);
+        TextView textWinner = (TextView)layout.findViewById(R.id.dialog_vs_text_winner);
+        TextView textPlayer1Name = (TextView)layout.findViewById(R.id.dialog_vs_text_name_1);
+        TextView textPlayer1Score = (TextView)layout.findViewById(R.id.dialog_vs_text_score_1);
+        TextView textPlayer2Name = (TextView)layout.findViewById(R.id.dialog_vs_text_name_2);
+        TextView textPlayer2Score = (TextView)layout.findViewById(R.id.dialog_vs_text_score_2);
+        textPlayer1Name.setText(mPlayers.get(0).name);
+        textPlayer1Name.setTextColor(mPlayers.get(0).color);
+        textPlayer1Score.setText("" + mPlayers.get(0).score);
+        textPlayer1Score.setTextColor(mPlayers.get(0).color);
+        textPlayer2Name.setText(mPlayers.get(1).name);
+        textPlayer2Name.setTextColor(mPlayers.get(1).color);
+        textPlayer2Score.setText("" + mPlayers.get(1).score);
+        textPlayer2Score.setTextColor(mPlayers.get(1).color);
+        String winnerString;
+        int winnerColor;
+        if (mPlayers.get(0).score > mPlayers.get(1).score) {
+            winnerString = mPlayers.get(0).name + " "
+                    + getResources().getString(R.string.vs_text_dialog_win_postfix);
+            winnerColor = mPlayers.get(0).color;
+        } else if (mPlayers.get(0).score < mPlayers.get(1).score) {
+            winnerString = mPlayers.get(1).name + " "
+                    + getResources().getString(R.string.vs_text_dialog_win_postfix);
+            winnerColor = mPlayers.get(1).color;
+        } else {
+            winnerString = getResources().getString(R.string.vs_text_dialog_draw);
+            winnerColor = getResources().getColor(R.color.colorAccent);
+        }
+        textWinner.setText(winnerString);
+        textWinner.setTextColor(winnerColor);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle(getResources().getString(R.string.vs_text_dialog_title))
+                .setView(layout)
+                .setPositiveButton(getResources().getString(R.string.text_ok),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                finish();
+                            }
+                        })
+                .setCancelable(false);
+        builder.show();
     }
 
     private void failToComplete() {
@@ -271,7 +324,7 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
         fragmentTransaction.commit();
     }
 
-    private void getComponents() {
+    private void initViews() {
         mTextTitle = (TextView)findViewById(R.id.vs_text_title);
         //easter egg start
         mTextSelectedList = (TextView)findViewById(R.id.vs_text_info);
@@ -279,6 +332,9 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
         //easter egg end
         mBtnStart = (Button)findViewById(R.id.vs_btn_start);
         mBtnStart.setOnClickListener(this);
+        ViewUtil.setButtonColor(mBtnStart, getResources().getColor(R.color.colorAccent));
+
+
         mPlayers = new ArrayList<>();
         for (int i = 0; i < NUM_MAX_PLAYER; ++i) {
             PlayerData player = new PlayerData();
@@ -316,22 +372,29 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
                 }
             }
         }
-        mSelectedPositionList = new ArrayList<>();
-        mAnswerMap = new HashMap<>();
-        mSelectedAnswerList = new ArrayList<>();
     }
 
-    private void initPlayerData() {
-        int[] colors = getResources().getIntArray(R.array.pastelColors);
+    private void initGameData() {
+        int[] colors = getResources().getIntArray(R.array.controlColors);
         Calendar calendar = Calendar.getInstance();
         int[] randomIndexs = RandomNumberUtil.getInstance(calendar.getTimeInMillis())
                 .getRandomNumberSet(colors.length);
         for (int i = 0; i < mPlayers.size(); ++i) {
             PlayerData player = mPlayers.get(i);
-            player.name = getResources().getString(R.string.vs_text_player + i);
+            player.name = getResources().getString(R.string.vs_text_player) + (i + 1);
             player.score = 0;
             player.color = colors[randomIndexs[i]];
+            player.textName.setTextColor(player.color);
+            player.btnName.setText(player.name);
+            ViewUtil.setButtonColor(player.btnName, player.color);
+//            ViewUtil.setButtonColor(player.btnSet,
+//                    getResources().getColor(R.color.base_darkgray));
+//            ViewUtil.setButtonColor(player.btnComplete,
+//                    getResources().getColor(R.color.base_darkgray));
         }
+        mSelectedPositionList = new ArrayList<>();
+        mAnswerMap = new HashMap<>();
+        mSelectedAnswerList = new ArrayList<>();
     }
 
     private void initGameState() {
@@ -342,9 +405,11 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
     private void startGame() {
         mBtnStart.setVisibility(View.GONE);
         for (PlayerData player : mPlayers) {
+            player.name = player.btnName.getText().toString();
             player.btnName.setEnabled(false);
-            player.btnName.setVisibility(View.INVISIBLE);
+            player.btnName.setVisibility(View.GONE);
             player.textName.setVisibility(View.VISIBLE);
+            player.textName.setText(player.name);
             player.textRemainTime.setVisibility(View.VISIBLE);
             player.textScore.setVisibility(View.VISIBLE);
             player.textScore.setText(getResources().getString(R.string.vs_text_score)
@@ -410,11 +475,19 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
                 }
             }
         }
-        mSelectedAnswerList.clear();
+        if (mSelectedAnswerList == null) {
+            Log.e("SET2", "error! mSelectedAnswerList is null");
+            mSelectedAnswerList = new ArrayList<>();
+        } else {
+            mSelectedAnswerList.clear();
+        }
         mTextSelectedList.setText("");
         mStage++;
         //TODO change title like (3/10)
-        mTextTitle.setText(getResources().getString(R.string.vs_text_stage) + mStage);
+        StringBuilder titleBuilder = new StringBuilder();
+        titleBuilder.append(getResources().getString(R.string.vs_text_stage)).append("(")
+                .append(mStage).append("/").append(NUM_MAX_STAGE).append(")");
+        mTextTitle.setText(titleBuilder.toString());
         mNineCardFragment.setCards(mDeckList);
     }
 
@@ -442,7 +515,7 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
         for (PlayerData player : mPlayers) {
             player.btnName.setVisibility(View.VISIBLE);
             player.btnName.setEnabled(true);
-            player.textName.setVisibility(View.INVISIBLE);
+            player.textName.setVisibility(View.GONE);
             player.textName.setText(player.btnName.getText());
             player.btnSet.setEnabled(false);
             player.btnComplete.setEnabled(false);
@@ -547,26 +620,26 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
         editName.setHint(getResources().getString(R.string.vs_text_player_hint));
         editName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
         builder.setView(editName)
-        .setPositiveButton(getResources().getString(R.string.text_ok),
-                new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                if (mNowFlagedPlayer != null) {
-                    String name = editName.getText().toString();
-                    if (name == null || "".equalsIgnoreCase(name)) {
-                        name = getResources().getString(R.string.vs_text_player);
+                .setTitle(getResources().getString(R.string.vs_text_player_dialog_title))
+                .setPositiveButton(getResources().getString(R.string.text_ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (mNowFlagedPlayer != null) {
+                            String name = editName.getText().toString();
+                            if (name == null || "".equalsIgnoreCase(name)) {
+                                name = getResources().getString(R.string.vs_text_player);
+                            }
+                            mNowFlagedPlayer.textName.setText(name);
+                            mNowFlagedPlayer.btnName.setText(name);
+                        }
                     }
-                    mNowFlagedPlayer.textName.setText(name);
-                    mNowFlagedPlayer.btnName.setText(name);
-                }
-            }
-        }).setNegativeButton(getResources().getString(R.string.text_cancel),
+                }).setNegativeButton(getResources().getString(R.string.text_cancel),
                 new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
 
-            }
-        }).show();
+                    }
+                }).show();
     }
 
     private boolean isNowComplete() {

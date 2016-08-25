@@ -8,6 +8,23 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="setBasicButtonStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
+    </style>
+
+    <style name="setZeroPaddingButtonStyle" parent="@style/setBasicButtonStyle">
+        <item name="android:padding">0dp</item>
+    </style>
+
+    <style name="setControlButtonStyle" parent="@style/setBasicButtonStyle">
+        <item name="android:textColor">@color/base_white</item>
+    </style>
 
     <style name="nineCardLayoutRowStyle">
         <item name="android:layout_width">match_parent</item>
@@ -44,6 +61,13 @@
         <item name="android:layout_alignParentLeft">true</item>
         <item name="android:layout_margin">@dimen/only_one_margin_card_text</item>
         <item name="android:textColor">@color/base_white</item>
+    </style>
+
+    <style name="vsDialogTextStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
     </style>
 
 </resources>

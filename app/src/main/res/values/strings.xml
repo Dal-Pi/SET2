@@ -38,11 +38,16 @@
 
     <string name="vs_text_stage">Stage</string>
     <string name="vs_text_player">Player</string>
-    <string name="vs_text_player_hint">Player Name</string>
+    <string name="vs_text_player_dialog_title">Insert player name</string>
+    <string name="vs_text_player_hint">name</string>
     <string name="vs_text_score">Score</string>
     <string name="vs_text_title_start">Select Start</string>
+    <string name="vs_text_dialog_title">Result</string>
+    <string name="vs_text_dialog_win_postfix">Win!</string>
+    <string name="vs_text_dialog_draw">Draw!</string>
     <string name="vs_btn_set">Set</string>
     <string name="vs_btn_complete">Complete</string>
     <string name="vs_btn_start">Start</string>
+    <string name="vs_btn_giveup">Give Up</string>
 
 </resources>

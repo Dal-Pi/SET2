@@ -50,23 +50,37 @@
                         android:hint="@string/timeattack_text_name"/>
                     <Button
                         android:id="@+id/timeattack_btn_register"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/setControlButtonStyle"
                         android:text="@string/timeattack_text_register"/>
                 </LinearLayout>
 
             </RelativeLayout>
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:orientation="vertical"
                 android:layout_weight="1">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+                    <TextView
+                        android:id="@+id/timeattack_text_remain"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="remain time"/>
+                </RelativeLayout>
+
 
                 <RelativeLayout
                     android:id="@+id/timeattack_layout_score"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true">
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
                     <TextView
                         android:id="@+id/timeattack_text_score"
                         android:layout_width="wrap_content"
@@ -85,24 +99,19 @@
                         android:text=""/>
                 </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/timeattack_text_remain"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_above="@id/timeattack_layout_score"
-                    android:layout_centerHorizontal="true"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="remain time"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
 
-                <Button
-                    android:id="@+id/timeattack_btn_hint"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:text="@string/timeattack_text_hint"/>
+                    <Button
+                        android:id="@+id/timeattack_btn_hint"
+                        style="@style/setControlButtonStyle"
+                        android:layout_centerInParent="true"
+                        android:text="@string/timeattack_text_hint" />
+                </RelativeLayout>
 
-            </RelativeLayout>
+            </LinearLayout>
 
         </LinearLayout>
 

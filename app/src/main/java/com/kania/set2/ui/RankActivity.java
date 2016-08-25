@@ -20,8 +20,10 @@ import com.kania.set2.model.SetContract;
 import com.kania.set2.model.SetRankData;
 import com.kania.set2.util.RandomNumberUtil;
 import com.kania.set2.util.SetRankUtil;
+import com.kania.set2.util.ViewUtil;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class RankActivity extends AppCompatActivity implements View.OnClickListener {
@@ -68,6 +70,12 @@ public class RankActivity extends AppCompatActivity implements View.OnClickListe
         mPreRankEasy = SetRankUtil.getInstance(this).getRankList(DIFFICULTY_EASY);
         mPreRankHard = SetRankUtil.getInstance(this).getRankList(DIFFICULTY_HARD);
 
+        Calendar calendar = Calendar.getInstance();
+        int[] colors = getResources().getIntArray(R.array.pointColors);
+        int randomIndex = RandomNumberUtil.getInstance(calendar.getTimeInMillis())
+                .getRandomNumber(colors.length);
+        mNewColor = colors[randomIndex];
+
         Intent intent = getIntent();
         if (intent != null) {
             mDifficulty = intent.getIntExtra(EXTRA_DIFFICULTY, DIFFICULTY_HARD);
@@ -92,6 +100,8 @@ public class RankActivity extends AppCompatActivity implements View.OnClickListe
         }
         mAdapter = new RankAdapter(this, R.layout.item_rank, adapterDate);
         mListRank.setAdapter(mAdapter);
+
+        setButtonColor();
     }
 
     @Override
@@ -164,10 +174,6 @@ public class RankActivity extends AppCompatActivity implements View.OnClickListe
         if (!isRankInList && mNewRankData.difficulty == mDifficulty) {
             targetList.add(mNewRankData);
         }
-        int[] colors = getResources().getIntArray(R.array.pastelColors);
-        int randomIndex = RandomNumberUtil.getInstance(mNewRankData.date)
-                .getRandomNumber(colors.length);
-        mNewColor = colors[randomIndex];
     }
 
     private void changeList() {
@@ -192,6 +198,12 @@ public class RankActivity extends AppCompatActivity implements View.OnClickListe
         }
         stringBuffer.append(")");
         mTextTitle.setText(stringBuffer.toString());
+    }
+
+    private void setButtonColor() {
+        ViewUtil.setButtonColor(mBtnEasy, mNewColor);
+        ViewUtil.setButtonColor(mBtnHard, mNewColor);
+        ViewUtil.setButtonColor(mBtnExit, mNewColor);
     }
 
     class RankAdapter extends ArrayAdapter<SetRankData> {

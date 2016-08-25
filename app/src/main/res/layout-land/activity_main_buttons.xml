@@ -12,16 +12,14 @@
 
         <Button
             android:id="@+id/main_buttons_btn_timeattack"
+            style="@style/setControlButtonStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
             android:text="@string/main_btn_time"/>
 
         <Button
             android:id="@+id/main_buttons_btn_howtoplay"
+            style="@style/setControlButtonStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
             android:text="@string/main_btn_how"/>
 
     </LinearLayout>
@@ -34,16 +32,14 @@
 
         <Button
             android:id="@+id/main_buttons_btn_vsmode"
+            style="@style/setControlButtonStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
             android:text="@string/main_btn_vs"/>
 
         <Button
             android:id="@+id/main_buttons_btn_rank"
+            style="@style/setControlButtonStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
             android:text="@string/main_btn_rank"/>
 
     </LinearLayout>

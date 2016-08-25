@@ -5,11 +5,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.kania.set2.R;
 import com.kania.set2.model.SetContract;
 import com.kania.set2.util.RandomNumberUtil;
+import com.kania.set2.util.ViewUtil;
 
 import java.util.Calendar;
 
@@ -23,25 +25,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ViewGroup mLayoutMainButtons;
     private ViewGroup mLayoutTimeAttackButtons;
 
+    private Button mBtnTimeAttack;
+    private Button mBtnVsMode;
+    private Button mBtnHowToPlay;
+    private Button mBtnRank;
+    private Button mBtnTimeAttackEasy;
+    private Button mBtnTimeAttackHard;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setTitleBGColor();
-
         mLayoutMainButtons = (ViewGroup)findViewById(R.id.main_layout_main_buttons);
         mLayoutTimeAttackButtons = (ViewGroup)findViewById(
                 R.id.main_layout_timeattack_buttons);
 
-        findViewById(R.id.main_buttons_btn_timeattack).setOnClickListener(this);
-        findViewById(R.id.main_buttons_btn_vsmode).setOnClickListener(this);
-        findViewById(R.id.main_buttons_btn_howtoplay).setOnClickListener(this);
-        findViewById(R.id.main_buttons_btn_rank).setOnClickListener(this);
+        mBtnTimeAttack = (Button)findViewById(R.id.main_buttons_btn_timeattack);
+        mBtnTimeAttack.setOnClickListener(this);
 
-        findViewById(R.id.main_buttons_btn_easy).setOnClickListener(this);
-        findViewById(R.id.main_buttons_btn_hard).setOnClickListener(this);
+        mBtnVsMode = (Button)findViewById(R.id.main_buttons_btn_vsmode);
+        mBtnVsMode.setOnClickListener(this);
+        mBtnHowToPlay = (Button)findViewById(R.id.main_buttons_btn_howtoplay);
+        mBtnHowToPlay.setOnClickListener(this);
+        mBtnRank = (Button)findViewById(R.id.main_buttons_btn_rank);
+        mBtnRank.setOnClickListener(this);
+        mBtnTimeAttackEasy = (Button)findViewById(R.id.main_buttons_btn_easy);
+        mBtnTimeAttackEasy.setOnClickListener(this);
+        mBtnTimeAttackHard = (Button)findViewById(R.id.main_buttons_btn_hard);
+        mBtnTimeAttackHard.setOnClickListener(this);
+
         mState = STATE_MAIN_BUTTONS;
+
+        setTitleBGColor();
     }
 
     @Override
@@ -51,13 +67,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setTitleBGColor() {
-        int[] colors = getResources().getIntArray(R.array.pastelColors);
+        int[] colors = getResources().getIntArray(R.array.pointColors);
         Calendar calendar = Calendar.getInstance();
         int randomIndex = RandomNumberUtil.getInstance(calendar.getTimeInMillis())
                 .getRandomNumber(colors.length);
 
         ViewGroup layoutTitle = (ViewGroup)findViewById(R.id.main_layout_bg_title);
         layoutTitle.setBackgroundColor(colors[randomIndex]);
+
+        ViewUtil.setButtonColor(mBtnTimeAttack, colors[randomIndex]);
+        ViewUtil.setButtonColor(mBtnVsMode, colors[randomIndex]);
+        ViewUtil.setButtonColor(mBtnHowToPlay, colors[randomIndex]);
+        ViewUtil.setButtonColor(mBtnRank, colors[randomIndex]);
+        ViewUtil.setButtonColor(mBtnTimeAttackEasy, colors[randomIndex]);
+        ViewUtil.setButtonColor(mBtnTimeAttackHard, colors[randomIndex]);
     }
 
     @Override

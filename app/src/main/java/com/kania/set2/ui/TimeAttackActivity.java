@@ -22,6 +22,7 @@ import com.kania.set2.util.RandomNumberUtil;
 import com.kania.set2.model.SetItemData;
 import com.kania.set2.model.SetVerifier;
 import com.kania.set2.util.SetRankUtil;
+import com.kania.set2.util.ViewUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -185,6 +186,10 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
         mEditName = (EditText)findViewById(R.id.timeattack_edit_name);
         mBtnRegister = (Button)findViewById(R.id.timeattack_btn_register);
         mBtnRegister.setOnClickListener(this);
+
+        int accentColor = getResources().getColor(R.color.colorAccent);
+        ViewUtil.setButtonColor(mBtnHint, accentColor);
+        ViewUtil.setButtonColor(mBtnRegister, accentColor);
     }
 
     private void initTools() {

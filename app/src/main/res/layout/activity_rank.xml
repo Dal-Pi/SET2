@@ -35,16 +35,12 @@
 
             <Button
                 android:id="@+id/rank_btn_easy"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxLines="1"
+                style="@style/setControlButtonStyle"
                 android:text="@string/easy"/>
 
             <Button
                 android:id="@+id/rank_btn_hard"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxLines="1"
+                style="@style/setControlButtonStyle"
                 android:text="@string/hard"/>
         </LinearLayout>
 
@@ -128,8 +124,7 @@
 
     <Button
         android:id="@+id/rank_btn_exit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/setControlButtonStyle"
         android:text="@string/rank_text_exit"/>
 
 </LinearLayout>

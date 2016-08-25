@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <array name="itemColors">
+    <array name="controlColors">
         <item>@color/blue</item>
         <item>@color/navy</item>
         <item>@color/green</item>
@@ -9,7 +9,15 @@
         <item>@color/orange</item>
     </array>
 
-    <array name="pastelColors">
+    <array name="pointColors">
+        <item>@color/pastel_blue</item>
+        <item>@color/pastel_pink</item>
+        <item>@color/pastel_green</item>
+        <item>@color/pastel_purple</item>
+        <item>@color/pastel_orange</item>
+    </array>
+
+    <array name="cardColors">
         <item>@color/pastel_blue</item>
         <item>@color/pastel_pink</item>
         <item>@color/pastel_green</item>

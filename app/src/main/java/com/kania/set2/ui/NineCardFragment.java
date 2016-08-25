@@ -82,7 +82,7 @@ public class NineCardFragment extends Fragment implements View.OnClickListener {
         mCardViewDataList = new CardViewData[NUM_ALL_CARDS];
         mAnswerColors = new int[NUM_ANS_CARDS];
 
-        mColors = getResources().getIntArray(R.array.pastelColors);
+        mColors = getResources().getIntArray(R.array.cardColors);
         mSelectedColor = getResources().getColor(R.color.base_darkgray);
         mNotSelectedColor = getResources().getColor(R.color.base_white);
     }
