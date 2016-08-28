@@ -5,7 +5,9 @@
 
 
     <!-- need to expend other resolutions. -->
-    <dimen name="only_one_margin_card_layout">1dp</dimen>
-    <dimen name="only_one_margin_card_image">5dp</dimen>
-    <dimen name="only_one_margin_card_text">5dp</dimen>
+    <dimen name="ninecard_margin_card_layout">1dp</dimen>
+    <dimen name="ninecard_margin_card_image">5dp</dimen>
+    <dimen name="ninecard_margin_card_text">5dp</dimen>
+
+    <dimen name="vs_ninecard_margin_selected">5dp</dimen>
 </resources>

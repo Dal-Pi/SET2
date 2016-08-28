@@ -89,7 +89,7 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
     private NineCardFragment mNineCardFragment;
 
     //layout
-    private ViewGroup mResultLayout;
+    private ViewGroup mSelectedLayout;
     private Button mBtnStart;
     private TextView mTextTitle;
     private TextView mTextSelectedList;
@@ -327,6 +327,7 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
     private void initViews() {
         mTextTitle = (TextView)findViewById(R.id.vs_text_title);
         //easter egg start
+        mSelectedLayout = (ViewGroup)findViewById(R.id.vs_layout_ninecard);
         mTextSelectedList = (TextView)findViewById(R.id.vs_text_info);
         mTextTitle.setOnClickListener(this);
         //easter egg end
@@ -375,7 +376,7 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void initGameData() {
-        int[] colors = getResources().getIntArray(R.array.controlColors);
+        int[] colors = getResources().getIntArray(R.array.pointColors);
         Calendar calendar = Calendar.getInstance();
         int[] randomIndexs = RandomNumberUtil.getInstance(calendar.getTimeInMillis())
                 .getRandomNumberSet(colors.length);
@@ -528,6 +529,7 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
         mNineCardFragment.unselectAllCard();
         mSelectedPositionList.clear();
         mNineCardFragment.setClickable(false);
+        mSelectedLayout.setBackgroundColor(getResources().getColor(R.color.base_white));
         enableAllButton(true);
         for (PlayerData player : mPlayers) {
             player.textRemainTime.setText("");
@@ -540,6 +542,7 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
         mRemainSetTime = NUM_TIME_SET;
         mSetTimerHandler.sendEmptyMessage(MESSAGE_WHAT_SET);
         mNineCardFragment.setClickable(true);
+        mSelectedLayout.setBackgroundColor(mNowFlagedPlayer.color);
     }
 
     private void setChanceCompleteState() {
@@ -547,8 +550,10 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
         mNineCardFragment.unselectAllCard();
         mSelectedPositionList.clear();
         mNineCardFragment.setClickable(false);
+        mSelectedLayout.setBackgroundColor(getResources().getColor(R.color.base_white));
         enableAllButton(false);
         mNowFlagedPlayer.btnComplete.setEnabled(true);
+        ViewUtil.setButtonColor(mNowFlagedPlayer.btnComplete, mNowFlagedPlayer.color);
         mRemainCompleteTime = NUM_TIME_COMPLETE;
         mSetTimerHandler.sendEmptyMessage(MESSAGE_WHAT_COMPLETE);
     }
@@ -565,6 +570,15 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
         for (PlayerData player : mPlayers) {
             player.btnSet.setEnabled(enable);
             player.btnComplete.setEnabled(enable);
+            if (enable) {
+                ViewUtil.setButtonColor(player.btnSet, player.color);
+                ViewUtil.setButtonColor(player.btnComplete, player.color);
+            } else {
+                ViewUtil.setButtonColor(player.btnSet, getResources()
+                        .getColor(R.color.base_lightgray));
+                ViewUtil.setButtonColor(player.btnComplete, getResources()
+                        .getColor(R.color.base_lightgray));
+            }
         }
     }
 
