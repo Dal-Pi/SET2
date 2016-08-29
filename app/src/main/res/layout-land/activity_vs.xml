@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/base_white">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/vs_text_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:text="@string/vs_text_title_start"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2">
+                <FrameLayout
+                    android:id="@+id/vs_container_answer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:visibility="visible">
+
+                </FrameLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+                    <TextView
+                        android:id="@+id/vs_player_text_remain_time_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:includeFontPadding="false"
+                        android:visibility="invisible"/>
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/vs_player_btn_set_1"
+                        style="@style/setZeroPaddingButtonStyle"
+                        android:text="@string/vs_btn_set"
+                        android:enabled="false"
+                        android:visibility="invisible"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/vs_player_btn_complete_1"
+                        style="@style/setZeroPaddingButtonStyle"
+                        android:text="@string/vs_btn_complete"
+                        android:enabled="false"
+                        android:visibility="invisible"/>
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/vs_player_layout_score_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+                    <TextView
+                        android:id="@+id/vs_player_text_score_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text=""
+                        android:includeFontPadding="false"
+                        android:visibility="invisible"/>
+                    <TextView
+                        android:id="@+id/vs_player_text_score_plus_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/vs_player_text_score_1"
+                        android:layout_centerVertical="true"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/answer_red"
+                        android:text=""
+                        android:includeFontPadding="false"
+                        android:visibility="invisible"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1">
+                    <Button
+                        android:id="@+id/vs_player_btn_name_1"
+                        style="@style/setZeroPaddingButtonStyle"
+                        android:layout_centerInParent="true"
+                        android:text="@string/vs_text_player" />
+
+                    <TextView
+                        android:id="@+id/vs_player_text_name_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:maxLines="1"
+                        android:includeFontPadding="false"
+                        android:visibility="gone"/>
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/vs_layout_ninecard"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="@dimen/vs_ninecard_margin_selected">
+
+                <Button
+                    android:id="@+id/vs_btn_start"
+                    style="@style/setControlButtonStyle"
+                    android:layout_centerInParent="true"
+                    android:text="@string/vs_btn_start"/>
+
+                <FrameLayout
+                    android:id="@+id/vs_container_ninecard"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </FrameLayout>
+            </RelativeLayout>
+            <TextView
+                android:id="@+id/vs_text_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2">
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+                    <TextView
+                        android:id="@+id/vs_player_text_remain_time_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:includeFontPadding="false"
+                        android:visibility="invisible"/>
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/vs_player_btn_set_2"
+                        style="@style/setZeroPaddingButtonStyle"
+                        android:text="@string/vs_btn_set"
+                        android:enabled="false"
+                        android:visibility="invisible"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <Button
+                        android:id="@+id/vs_player_btn_complete_2"
+                        style="@style/setZeroPaddingButtonStyle"
+                        android:text="@string/vs_btn_complete"
+                        android:enabled="false"
+                        android:visibility="invisible"/>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/vs_player_layout_score_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+                    <TextView
+                        android:id="@+id/vs_player_text_score_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text=""
+                        android:includeFontPadding="false"
+                        android:visibility="invisible"/>
+                    <TextView
+                        android:id="@+id/vs_player_text_score_plus_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/vs_player_text_score_2"
+                        android:layout_centerVertical="true"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/answer_red"
+                        android:text=""
+                        android:includeFontPadding="false"
+                        android:visibility="invisible"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1">
+                    <Button
+                        android:id="@+id/vs_player_btn_name_2"
+                        style="@style/setZeroPaddingButtonStyle"
+                        android:layout_centerInParent="true"
+                        android:text="@string/vs_text_player" />
+
+                    <TextView
+                        android:id="@+id/vs_player_text_name_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:maxLines="1"
+                        android:includeFontPadding="false"
+                        android:visibility="gone"/>
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

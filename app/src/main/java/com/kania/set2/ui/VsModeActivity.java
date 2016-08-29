@@ -105,16 +105,16 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
 
         initViews();
         initCards();
-        if (savedInstanceState == null) {
+//        if (savedInstanceState == null) {
             initGameData();
             initGameState();
             renewViews();
-        } else {
+//        } else {
             //TODO
             //loadPlayerData();
             //resumeGame()
-            renewViews();
-        }
+            //renewViews();
+//        }
     }
 
     @Override
@@ -378,8 +378,10 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
     private void initGameData() {
         int[] colors = getResources().getIntArray(R.array.pointColors);
         Calendar calendar = Calendar.getInstance();
+        Log.d("SET2", "colors = " + colors.toString());
         int[] randomIndexs = RandomNumberUtil.getInstance(calendar.getTimeInMillis())
                 .getRandomNumberSet(colors.length);
+        Log.d("SET2", "randomIndexs = " + randomIndexs.toString());
         for (int i = 0; i < mPlayers.size(); ++i) {
             PlayerData player = mPlayers.get(i);
             player.name = getResources().getString(R.string.vs_text_player) + (i + 1);
@@ -388,10 +390,6 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
             player.textName.setTextColor(player.color);
             player.btnName.setText(player.name);
             ViewUtil.setButtonColor(player.btnName, player.color);
-//            ViewUtil.setButtonColor(player.btnSet,
-//                    getResources().getColor(R.color.base_darkgray));
-//            ViewUtil.setButtonColor(player.btnComplete,
-//                    getResources().getColor(R.color.base_darkgray));
         }
         mSelectedPositionList = new ArrayList<>();
         mAnswerMap = new HashMap<>();

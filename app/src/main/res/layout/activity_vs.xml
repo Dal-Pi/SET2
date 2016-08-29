@@ -23,11 +23,17 @@
         android:orientation="horizontal"
         android:layout_weight="2">
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/vs_layout_ninecard"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="@dimen/vs_ninecard_margin_selected">
+
+            <Button
+                android:id="@+id/vs_btn_start"
+                style="@style/setControlButtonStyle"
+                android:layout_centerInParent="true"
+                android:text="@string/vs_btn_start"/>
 
             <FrameLayout
                 android:id="@+id/vs_container_ninecard"
@@ -36,7 +42,7 @@
 
             </FrameLayout>
 
-        </LinearLayout>
+        </RelativeLayout>
 
 
     </LinearLayout>
@@ -60,8 +66,21 @@
             android:orientation="vertical"
             android:layout_weight="3">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+                <TextView
+                    android:id="@+id/vs_player_text_remain_time_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:includeFontPadding="false"
+                    android:visibility="invisible"/>
+            </RelativeLayout>
+
             <LinearLayout
-                android:id="@+id/vs_player_layout_buttons_1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -82,20 +101,6 @@
                     android:enabled="false"
                     android:visibility="invisible"/>
             </LinearLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-                <TextView
-                    android:id="@+id/vs_player_text_remain_time_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:includeFontPadding="false"
-                    android:visibility="invisible"/>
-            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/vs_player_layout_score_1"
@@ -160,15 +165,6 @@
                 android:visibility="visible">
 
             </FrameLayout>
-
-            <Button
-                android:id="@+id/vs_btn_start"
-                style="@style/setControlButtonStyle"
-                android:layout_centerInParent="true"
-                android:text="@string/vs_btn_start">
-
-            </Button>
-
         </RelativeLayout>
 
         <LinearLayout
@@ -177,8 +173,21 @@
             android:orientation="vertical"
             android:layout_weight="3">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+                <TextView
+                    android:id="@+id/vs_player_text_remain_time_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:includeFontPadding="false"
+                    android:visibility="invisible"/>
+            </RelativeLayout>
+
             <LinearLayout
-                android:id="@+id/vs_player_layout_buttons_2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -199,20 +208,6 @@
                     android:enabled="false"
                     android:visibility="invisible"/>
             </LinearLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-                <TextView
-                    android:id="@+id/vs_player_text_remain_time_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:includeFontPadding="false"
-                    android:visibility="invisible"/>
-            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/vs_player_layout_score_2"
