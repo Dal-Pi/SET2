@@ -25,6 +25,7 @@ import com.kania.set2.model.SetVerifier;
 import com.kania.set2.util.RandomNumberUtil;
 import com.kania.set2.util.ViewUtil;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -51,9 +52,16 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
     private static final int MESSAGE_WHAT_SET = 1;
     private static final int MESSAGE_WHAT_COMPLETE = 2;
 
-    public static final String KEY_ANSWER_LIST = "saved_answer_list";
+    public static final String KEY_STATE = "saved_state";
+    public static final String KEY_SELECT_PLAYER_INDEX = "saved_select_player_index";
+    public static final String KEY_PLAYER_NAME_PREFIX = "saved_player_name_";
+    public static final String KEY_PLAYER_SCORE_PREFIX = "saved_player_score_";
+    public static final String KEY_REMAIN_SET = "saved_remain_set";
+    public static final String KEY_REMAIN_COMPLETE = "saved_remain_set";
+
     public static final String KEY_DECK_LIST = "saved_deck_list";
     public static final String KEY_SELECTED_LIST = "saved_selected_list";
+    public static final String KEY_ANSWER_LIST = "saved_answer_list";
     public static final String KEY_STAGE_NUM = "saved_selected_list";
 
     public static final int ANIMATION_DURATION = 2000;
@@ -62,7 +70,6 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
     public static final int GAME_STATE_READY = 2;
     public static final int GAME_STATE_CALLED_SET = 3;
     public static final int GAME_STATE_CHANCE_COMPLETE = 4;
-    public static final int GAME_STATE_FINISH = 5;
 
     //utils
     private SetHandler mSetTimerHandler;
@@ -105,16 +112,75 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
 
         initViews();
         initCards();
-//        if (savedInstanceState == null) {
-            initGameData();
-            initGameState();
+        initGameData();
+        if (savedInstanceState != null) {
+            loadPlayerData(savedInstanceState);
             renewViews();
-//        } else {
-            //TODO
-            //loadPlayerData();
-            //resumeGame()
-            //renewViews();
-//        }
+        } else {
+            mNowGameState = GAME_STATE_PREPARE;
+            renewViews();
+        }
+    }
+
+    private void loadPlayerData(Bundle savedInstanceState) {
+        //load start
+        mNowGameState = savedInstanceState.getInt(KEY_STATE);
+        for (int i = 0; i < mPlayers.size(); ++i) {
+            mPlayers.get(i).name = savedInstanceState.getString(KEY_PLAYER_NAME_PREFIX + i);
+            mPlayers.get(i).btnName.setText(mPlayers.get(i).name);
+            mPlayers.get(i).score = savedInstanceState.getInt(KEY_PLAYER_SCORE_PREFIX + i);
+        }
+
+        if (mNowGameState == GAME_STATE_CALLED_SET) {
+            mNowFlagedPlayer = mPlayers
+                    .get(savedInstanceState.getInt(KEY_SELECT_PLAYER_INDEX));
+            mRemainSetTime = savedInstanceState.getInt(KEY_REMAIN_SET, NUM_TIME_SET);
+        } else if (mNowGameState == GAME_STATE_CHANCE_COMPLETE) {
+            mNowFlagedPlayer = mPlayers
+                    .get(savedInstanceState.getInt(KEY_SELECT_PLAYER_INDEX));
+            mRemainCompleteTime = savedInstanceState
+                    .getInt(KEY_REMAIN_COMPLETE, NUM_TIME_COMPLETE);
+        }
+
+        if (mNowGameState != GAME_STATE_PREPARE) {
+            mStage = savedInstanceState.getInt(KEY_STAGE_NUM, 0);
+            mDeckList = (ArrayList<SetItemData>)savedInstanceState.getSerializable(KEY_DECK_LIST);
+            mNineCardFragment.setCards(mDeckList);
+            mSelectedPositionList = (ArrayList<Integer>)savedInstanceState
+                    .getSerializable(KEY_SELECTED_LIST);
+            for (int pos : mSelectedPositionList) {
+                mNineCardFragment.selectCard(pos);
+            }
+            mAnswerMap = (HashMap<String, SetAnswerData>)savedInstanceState
+                    .getSerializable(KEY_ANSWER_LIST);
+            printSelectedAnswerList();
+        }
+        //load end
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_STATE, mNowGameState);
+        for (int i = 0; i < mPlayers.size(); ++i) {
+            outState.putString(KEY_PLAYER_NAME_PREFIX + i, mPlayers.get(i).name);
+            outState.putInt(KEY_PLAYER_SCORE_PREFIX + i, mPlayers.get(i).score);
+        }
+
+        if (mNowGameState == GAME_STATE_CALLED_SET) {
+            outState.putInt(KEY_SELECT_PLAYER_INDEX, mPlayers.indexOf(mNowFlagedPlayer));
+            outState.putInt(KEY_REMAIN_SET, mRemainSetTime);
+        } else if (mNowGameState == GAME_STATE_CHANCE_COMPLETE) {
+            outState.putInt(KEY_SELECT_PLAYER_INDEX, mPlayers.indexOf(mNowFlagedPlayer));
+            outState.putInt(KEY_REMAIN_COMPLETE, mRemainCompleteTime);
+        }
+
+        if (mNowGameState != GAME_STATE_PREPARE) {
+            outState.putInt(KEY_STAGE_NUM, mStage);
+            outState.putSerializable(KEY_DECK_LIST, mDeckList);
+            outState.putSerializable(KEY_SELECTED_LIST, mSelectedPositionList);
+            outState.putSerializable(KEY_ANSWER_LIST, mAnswerMap);
+        }
     }
 
     @Override
@@ -135,11 +201,13 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.vs_player_btn_set_1:
                 mNowFlagedPlayer = mPlayers.get(0);
                 mNowGameState = GAME_STATE_CALLED_SET;
+                mRemainSetTime = NUM_TIME_SET;
                 renewViews();
                 break;
             case R.id.vs_player_btn_set_2:
                 mNowFlagedPlayer = mPlayers.get(1);
                 mNowGameState = GAME_STATE_CALLED_SET;
+                mRemainSetTime = NUM_TIME_SET;
                 renewViews();
                 break;
             case R.id.vs_player_btn_complete_1:
@@ -173,6 +241,7 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
         } else {
             failToFindSet();
         }
+        mSelectedPositionList.clear();
     }
 
     @Override
@@ -214,6 +283,7 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
         addScore(NUM_SCORE_SET_SUCCEED);
         setNotiImage(true);
         printSelectedAnswerList();
+        mRemainCompleteTime = NUM_TIME_COMPLETE;
         mNowGameState = GAME_STATE_CHANCE_COMPLETE;
         renewViews();
     }
@@ -335,7 +405,6 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
         mBtnStart.setOnClickListener(this);
         ViewUtil.setButtonColor(mBtnStart, getResources().getColor(R.color.colorAccent));
 
-
         mPlayers = new ArrayList<>();
         for (int i = 0; i < NUM_MAX_PLAYER; ++i) {
             PlayerData player = new PlayerData();
@@ -396,11 +465,6 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
         mSelectedAnswerList = new ArrayList<>();
     }
 
-    private void initGameState() {
-        mNowGameState = GAME_STATE_PREPARE;
-        renewViews();
-    }
-
     private void startGame() {
         mBtnStart.setVisibility(View.GONE);
         for (PlayerData player : mPlayers) {
@@ -434,8 +498,6 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
         } else if (mNowGameState == GAME_STATE_CHANCE_COMPLETE) {
             printAnswerInfo();
             setChanceCompleteState();
-        } else if (mNowGameState == GAME_STATE_FINISH) {
-            //TODO
         } else {
             Log.e("SET2", "invalid state!");
         }
@@ -508,53 +570,56 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
         return sb.toString();
     }
 
+    //state methods [start]
     private void setPrepareState() {
         Log.d("SET2", "[state] setPrepareState");
         mBtnStart.setVisibility(View.VISIBLE);
+
+        enableAllButton(false);
         for (PlayerData player : mPlayers) {
+            player.textRemainTime.setVisibility(View.INVISIBLE);
+            player.btnSet.setVisibility(View.INVISIBLE);
+            player.btnComplete.setVisibility(View.INVISIBLE);
+            player.textScore.setVisibility(View.INVISIBLE);
+            player.textScorePlus.setVisibility(View.INVISIBLE);
             player.btnName.setVisibility(View.VISIBLE);
-            player.btnName.setEnabled(true);
             player.textName.setVisibility(View.GONE);
             player.textName.setText(player.btnName.getText());
-            player.btnSet.setEnabled(false);
-            player.btnComplete.setEnabled(false);
         }
-
     }
 
     private void setReadyState() {
         Log.d("SET2", "[state] setReadyState");
         mNineCardFragment.unselectAllCard();
-        mSelectedPositionList.clear();
         mNineCardFragment.setClickable(false);
         mSelectedLayout.setBackgroundColor(getResources().getColor(R.color.base_white));
         enableAllButton(true);
         for (PlayerData player : mPlayers) {
             player.textRemainTime.setText("");
         }
+        mSelectedPositionList.clear();
     }
 
     private void setCalledSetState(){
         Log.d("SET2", "[state] setCalledSetState");
-        enableAllButton(false);
-        mRemainSetTime = NUM_TIME_SET;
-        mSetTimerHandler.sendEmptyMessage(MESSAGE_WHAT_SET);
+        mNineCardFragment.unselectAllCard();
         mNineCardFragment.setClickable(true);
         mSelectedLayout.setBackgroundColor(mNowFlagedPlayer.color);
+        enableAllButton(false);
+        mSetTimerHandler.sendEmptyMessage(MESSAGE_WHAT_SET);
     }
 
     private void setChanceCompleteState() {
         Log.d("SET2", "[state] setChanceCompleteState");
         mNineCardFragment.unselectAllCard();
-        mSelectedPositionList.clear();
         mNineCardFragment.setClickable(false);
         mSelectedLayout.setBackgroundColor(getResources().getColor(R.color.base_white));
         enableAllButton(false);
         mNowFlagedPlayer.btnComplete.setEnabled(true);
         ViewUtil.setButtonColor(mNowFlagedPlayer.btnComplete, mNowFlagedPlayer.color);
-        mRemainCompleteTime = NUM_TIME_COMPLETE;
         mSetTimerHandler.sendEmptyMessage(MESSAGE_WHAT_COMPLETE);
     }
+    //state methods [end]
 
     private void printScore(PlayerData player) {
         player.textScore.setText(getResources().getString(R.string.vs_text_score)
@@ -688,7 +753,7 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
         public int color;
     }
 
-    class SetAnswerData {
+    class SetAnswerData implements Serializable {
         public int first;
         public int second;
         public int third;

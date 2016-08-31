@@ -52,6 +52,7 @@
         <item name="android:scaleType">fitCenter</item>
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
+        <item name="android:background">@color/base_lightgray</item>
     </style>
 
     <style name="nineCardCardNumberStyle">

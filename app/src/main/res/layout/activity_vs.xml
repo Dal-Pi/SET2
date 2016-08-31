@@ -3,7 +3,12 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@color/base_white">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -33,7 +38,8 @@
                 android:id="@+id/vs_btn_start"
                 style="@style/setControlButtonStyle"
                 android:layout_centerInParent="true"
-                android:text="@string/vs_btn_start"/>
+                android:text="@string/vs_btn_start"
+                android:visibility="gone"/>
 
             <FrameLayout
                 android:id="@+id/vs_container_ninecard"
@@ -77,7 +83,7 @@
                     android:layout_centerInParent="true"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:includeFontPadding="false"
-                    android:visibility="invisible"/>
+                    android:text=""/>
             </RelativeLayout>
 
             <LinearLayout
@@ -91,15 +97,13 @@
                     style="@style/setZeroPaddingButtonStyle"
                     android:layout_weight="1"
                     android:text="@string/vs_btn_set"
-                    android:enabled="false"
-                    android:visibility="invisible"/>
+                    android:enabled="false" />
                 <Button
                     android:id="@+id/vs_player_btn_complete_1"
                     style="@style/setZeroPaddingButtonStyle"
                     android:layout_weight="1"
                     android:text="@string/vs_btn_complete"
-                    android:enabled="false"
-                    android:visibility="invisible"/>
+                    android:enabled="false" />
             </LinearLayout>
 
             <RelativeLayout
@@ -114,8 +118,7 @@
                     android:layout_centerInParent="true"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text=""
-                    android:includeFontPadding="false"
-                    android:visibility="invisible"/>
+                    android:includeFontPadding="false" />
                 <TextView
                     android:id="@+id/vs_player_text_score_plus_1"
                     android:layout_width="wrap_content"
@@ -125,8 +128,7 @@
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/answer_red"
                     android:text=""
-                    android:includeFontPadding="false"
-                    android:visibility="invisible"/>
+                    android:includeFontPadding="false" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -138,7 +140,8 @@
                     android:id="@+id/vs_player_btn_name_1"
                     style="@style/setZeroPaddingButtonStyle"
                     android:layout_centerInParent="true"
-                    android:text="@string/vs_text_player" />
+                    android:text="@string/vs_text_player"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/vs_player_text_name_1"
@@ -147,8 +150,7 @@
                     android:layout_centerInParent="true"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:maxLines="1"
-                    android:includeFontPadding="false"
-                    android:visibility="gone"/>
+                    android:includeFontPadding="false" />
             </RelativeLayout>
 
         </LinearLayout>
@@ -184,7 +186,7 @@
                     android:layout_centerInParent="true"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:includeFontPadding="false"
-                    android:visibility="invisible"/>
+                    android:text=""/>
             </RelativeLayout>
 
             <LinearLayout
@@ -198,15 +200,13 @@
                     style="@style/setZeroPaddingButtonStyle"
                     android:layout_weight="1"
                     android:text="@string/vs_btn_set"
-                    android:enabled="false"
-                    android:visibility="invisible"/>
+                    android:enabled="false" />
                 <Button
                     android:id="@+id/vs_player_btn_complete_2"
                     style="@style/setZeroPaddingButtonStyle"
                     android:layout_weight="1"
                     android:text="@string/vs_btn_complete"
-                    android:enabled="false"
-                    android:visibility="invisible"/>
+                    android:enabled="false" />
             </LinearLayout>
 
             <RelativeLayout
@@ -221,8 +221,7 @@
                     android:layout_centerInParent="true"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text=""
-                    android:includeFontPadding="false"
-                    android:visibility="invisible"/>
+                    android:includeFontPadding="false" />
                 <TextView
                     android:id="@+id/vs_player_text_score_plus_2"
                     android:layout_width="wrap_content"
@@ -232,8 +231,7 @@
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/answer_red"
                     android:text=""
-                    android:includeFontPadding="false"
-                    android:visibility="invisible"/>
+                    android:includeFontPadding="false" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -245,7 +243,8 @@
                     android:id="@+id/vs_player_btn_name_2"
                     style="@style/setZeroPaddingButtonStyle"
                     android:layout_centerInParent="true"
-                    android:text="@string/vs_text_player" />
+                    android:text="@string/vs_text_player"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/vs_player_text_name_2"
@@ -254,8 +253,7 @@
                     android:layout_centerInParent="true"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:maxLines="1"
-                    android:includeFontPadding="false"
-                    android:visibility="gone"/>
+                    android:includeFontPadding="false" />
             </RelativeLayout>
 
         </LinearLayout>
