@@ -27,9 +27,6 @@ public class AnswerImageFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        //test
-        Log.d("SET2", "onCreate()");
-
         super.onCreate(savedInstanceState);
     }
 

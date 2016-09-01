@@ -26,6 +26,7 @@ import com.kania.set2.util.ViewUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Vector;
 
 public class TimeAttackActivity extends AppCompatActivity implements View.OnClickListener,
         NineCardFragment.OnSelectThreeCardListener{
@@ -61,12 +62,12 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
     private int mScore;
     private int mHintCount;
     private boolean mIsExistSavedQuestion;
-    private ArrayList<SetItemData> mAllItemList;
+    private Vector<SetItemData> mAllItemList;
     private int[] mAllItemListSequence;
-    private ArrayList<SetItemData> mAnswerList;
-    private ArrayList<SetItemData> mDeckList;
-    private ArrayList<Integer> mSelectedPositionList;
-    private ArrayList<Integer> mSavedSelectedPositionList;
+    private Vector<SetItemData> mAnswerList;
+    private Vector<SetItemData> mDeckList;
+    private Vector<Integer> mSelectedPositionList;
+    private Vector<Integer> mSavedSelectedPositionList;
 
     //fragments
     private AnswerImageFragment mAnswerImageFragment;
@@ -117,11 +118,11 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
         outState.putInt(KEY_HINT_COUNT, mHintCount);
         outState.putSerializable(KEY_ANSWER_LIST, mAnswerList);
         outState.putSerializable(KEY_DECK_LIST, mDeckList);
-        outState.putIntegerArrayList(KEY_SELECTED_LIST, mSelectedPositionList);
+        outState.putSerializable(KEY_SELECTED_LIST, mSelectedPositionList);
     }
 
     @Override
-    public void onThreeCardSelected(ArrayList<SetItemData> selectedList) {
+    public void onThreeCardSelected(Vector<SetItemData> selectedList) {
         if (checkAnswer(selectedList)) {
             addScore();
             setNotiImage(true);
@@ -137,7 +138,7 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onSelectCard(int position) {
         if (mSelectedPositionList == null) {
-            mSelectedPositionList = new ArrayList<>();
+            mSelectedPositionList = new Vector<>();
         }
         if (mSelectedPositionList.contains(position)) {
             for (int i = 0; i < mSelectedPositionList.size(); ++i) {
@@ -208,11 +209,11 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
             mRemainTime = savedInstanceState.getInt(KEY_REMAIN_TIME);;
             mScore = savedInstanceState.getInt(KEY_SCORE);
             mHintCount = savedInstanceState.getInt(KEY_HINT_COUNT);
-            mAnswerList = (ArrayList<SetItemData>)savedInstanceState
+            mAnswerList = (Vector<SetItemData>)savedInstanceState
                     .getSerializable(KEY_ANSWER_LIST);
-            mDeckList = (ArrayList<SetItemData>)savedInstanceState.getSerializable(KEY_DECK_LIST);
-            mSavedSelectedPositionList = savedInstanceState
-                    .getIntegerArrayList(KEY_SELECTED_LIST);
+            mDeckList = (Vector<SetItemData>)savedInstanceState.getSerializable(KEY_DECK_LIST);
+            mSavedSelectedPositionList = (Vector<Integer>)savedInstanceState
+                    .getSerializable(KEY_SELECTED_LIST);
             mIsExistSavedQuestion = true;
         } else {
             mRemainTime = GAME_TIME;
@@ -220,7 +221,7 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
             mHintCount = 0;
         }
 
-        mAllItemList = new ArrayList<>();
+        mAllItemList = new Vector<>();
         for(int color = 0; color < NUM_ANS_CARDS; ++color) {
             for (int shape = 0; shape < NUM_ANS_CARDS; ++shape) {
                 for (int fill = 0; fill < NUM_ANS_CARDS; ++fill) {
@@ -231,7 +232,7 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
             }
         }
 
-        mSelectedPositionList = new ArrayList<>();
+        mSelectedPositionList = new Vector<>();
     }
 
     private void startGame() {
@@ -270,8 +271,8 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
                     Toast.LENGTH_SHORT).show();
         }
         //make random position
-        ArrayList<SetItemData> sortedDeckList = getNewDeckWithAnswer(mAnswerList);
-        mDeckList = new ArrayList<>();
+        Vector<SetItemData> sortedDeckList = getNewDeckWithAnswer(mAnswerList);
+        mDeckList = new Vector<>();
         int [] deckListSequence = mRandomNumberUtil.getRandomNumberSet(sortedDeckList.size());
         for (int i = 0; i < NUM_ALL_CARDS; ++i) {
             mDeckList.add(sortedDeckList.get(deckListSequence[i]));
@@ -284,11 +285,11 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
     }
 
     @Nullable
-    private ArrayList<SetItemData> getNewAnswer(int difficulty) {
+    private Vector<SetItemData> getNewAnswer(int difficulty) {
         SetItemData firstItem = null;
         SetItemData secondItem = null;
         SetItemData thirdItem = null;
-        ArrayList<SetItemData> ret = new ArrayList<>();
+        Vector<SetItemData> ret = new Vector<>();
 
         mAllItemListSequence = mRandomNumberUtil.getRandomNumberSet(mAllItemList.size()); //3*3*3*1
         firstItem = mAllItemList.get(mAllItemListSequence[0]);
@@ -338,13 +339,13 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
     }
 
     @Nullable
-    private ArrayList<SetItemData> getNewDeckWithAnswer(ArrayList<SetItemData> answer) {
-        ArrayList<SetItemData> ret = new ArrayList<>();
+    private Vector<SetItemData> getNewDeckWithAnswer(Vector<SetItemData> answer) {
+        Vector<SetItemData> ret = new Vector<>();
         ret.addAll(answer);
 
         int[] sequence = mRandomNumberUtil.getRandomNumberSet(27); //3*3*3*1
         for (int i = 0; i < mAllItemListSequence.length; ++i) {
-            ArrayList<SetItemData> forCheck = new ArrayList<>();
+            Vector<SetItemData> forCheck = new Vector<>();
             SetItemData candidate = mAllItemList.get(mAllItemListSequence[i]);
             //if include answer, skip
             boolean isAnswerItem = false;
@@ -392,7 +393,7 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
         mBtnHint.setEnabled(true);
     }
 
-    private boolean checkAnswer(ArrayList<SetItemData> candidates) {
+    private boolean checkAnswer(Vector<SetItemData> candidates) {
         //TODO verifying
         if (candidates.size() != NUM_ANS_CARDS) {
             return false;
@@ -468,7 +469,7 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
             hintTarget2 = mAnswerList.get(2);
         }
 
-        ArrayList<SetItemData> hints = new ArrayList<>();
+        Vector<SetItemData> hints = new Vector<>();
         hints.add(hintTarget1);
         if (hintTarget2 != null) {
             hints.add(hintTarget2);

@@ -1,13 +1,13 @@
 package com.kania.set2.model;
 
-import java.util.ArrayList;
+import java.util.Vector;
 
 /**
  * Created by user on 2016-08-14.
  */
 
 public class SetVerifier {
-    public static boolean isValidSet(ArrayList<SetItemData> items) {
+    public static boolean isValidSet(Vector<SetItemData> items) {
         if (items.size() != 3) {
             return false;
         }

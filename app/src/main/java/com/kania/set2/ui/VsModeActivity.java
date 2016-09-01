@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -26,10 +28,10 @@ import com.kania.set2.util.RandomNumberUtil;
 import com.kania.set2.util.ViewUtil;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Vector;
 
 /**
  * Created by user on 2016-08-22.
@@ -57,12 +59,12 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
     public static final String KEY_PLAYER_NAME_PREFIX = "saved_player_name_";
     public static final String KEY_PLAYER_SCORE_PREFIX = "saved_player_score_";
     public static final String KEY_REMAIN_SET = "saved_remain_set";
-    public static final String KEY_REMAIN_COMPLETE = "saved_remain_set";
+    public static final String KEY_REMAIN_COMPLETE = "saved_remain_complete";
 
     public static final String KEY_DECK_LIST = "saved_deck_list";
     public static final String KEY_SELECTED_LIST = "saved_selected_list";
-    public static final String KEY_ANSWER_LIST = "saved_answer_list";
-    public static final String KEY_STAGE_NUM = "saved_selected_list";
+    public static final String KEY_ANSWER_MAP = "saved_answer_list";
+    public static final String KEY_STAGE_NUM = "saved_stage_number";
 
     public static final int ANIMATION_DURATION = 2000;
 
@@ -73,6 +75,7 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
 
     //utils
     private SetHandler mSetTimerHandler;
+    private boolean isSaved = false;
 
 
     //game data
@@ -80,16 +83,15 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
     private int mRemainSetTime;
     private int mRemainCompleteTime;
 
-    private ArrayList<SetItemData> mAllItemList;
+    private Vector<SetItemData> mAllItemList;
     private int[] mAllItemListSequence;
     private HashMap<String, SetAnswerData> mAnswerMap;
-    private ArrayList<SetItemData> mDeckList;
-    private ArrayList<Integer> mSelectedPositionList = new ArrayList<>(); //TODO why?
-    private ArrayList<Integer> mSavedSelectedPositionList;
+    private Vector<SetItemData> mDeckList;
+    private Vector<Integer> mSelectedPositionList = new Vector<>(); //TODO why?
+    private Vector<Integer> mSavedSelectedPositionList;
     private int mNowGameState;
-    private ArrayList<PlayerData> mPlayers;
+    private Vector<PlayerData> mPlayers;
     private PlayerData mNowFlagedPlayer;
-    private ArrayList<SetAnswerData> mSelectedAnswerList;
 
     //fragments
     private AnswerImageFragment mAnswerImageFragment;
@@ -106,7 +108,18 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_vs);
-        addFragment();
+
+//        FragmentManager fm = getFragmentManager();
+//        mNineCardFragment = (NineCardFragment)fm
+//                .findFragmentByTag(NineCardFragment.class.getSimpleName());
+//        mAnswerImageFragment = (AnswerImageFragment)fm
+//                .findFragmentByTag(AnswerImageFragment.class.getSimpleName());
+//        if (mNineCardFragment == null) {
+            addNineCardFragment();
+//        }
+//        if (mAnswerImageFragment == null) {
+            addAnswerImageFragment();
+//        }
 
         mSetTimerHandler = new SetHandler();
 
@@ -115,11 +128,17 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
         initGameData();
         if (savedInstanceState != null) {
             loadPlayerData(savedInstanceState);
-            renewViews();
+            //game will resume when onResume called.
         } else {
             mNowGameState = GAME_STATE_PREPARE;
             renewViews();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        resumeGame();
     }
 
     private void loadPlayerData(Bundle savedInstanceState) {
@@ -144,16 +163,12 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
 
         if (mNowGameState != GAME_STATE_PREPARE) {
             mStage = savedInstanceState.getInt(KEY_STAGE_NUM, 0);
-            mDeckList = (ArrayList<SetItemData>)savedInstanceState.getSerializable(KEY_DECK_LIST);
-            mNineCardFragment.setCards(mDeckList);
-            mSelectedPositionList = (ArrayList<Integer>)savedInstanceState
+            mDeckList = (Vector<SetItemData>)savedInstanceState.getSerializable(KEY_DECK_LIST);
+            mSavedSelectedPositionList = (Vector<Integer>)savedInstanceState
                     .getSerializable(KEY_SELECTED_LIST);
-            for (int pos : mSelectedPositionList) {
-                mNineCardFragment.selectCard(pos);
-            }
             mAnswerMap = (HashMap<String, SetAnswerData>)savedInstanceState
-                    .getSerializable(KEY_ANSWER_LIST);
-            printSelectedAnswerList();
+                    .getSerializable(KEY_ANSWER_MAP);
+            isSaved = true;
         }
         //load end
     }
@@ -179,7 +194,7 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
             outState.putInt(KEY_STAGE_NUM, mStage);
             outState.putSerializable(KEY_DECK_LIST, mDeckList);
             outState.putSerializable(KEY_SELECTED_LIST, mSelectedPositionList);
-            outState.putSerializable(KEY_ANSWER_LIST, mAnswerMap);
+            outState.putSerializable(KEY_ANSWER_MAP, mAnswerMap);
         }
     }
 
@@ -234,7 +249,7 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     @Override
-    public void onThreeCardSelected(ArrayList<SetItemData> selectedList) {
+    public void onThreeCardSelected(Vector<SetItemData> selectedList) {
         mSetTimerHandler.removeMessages(MESSAGE_WHAT_SET);
         if (checkAnswer(selectedList)) {
             succeedToFindSet();
@@ -247,7 +262,7 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onSelectCard(int position) {
         if (mSelectedPositionList == null) {
-            mSelectedPositionList = new ArrayList<>();
+            mSelectedPositionList = new Vector<>();
         }
         if (mSelectedPositionList.contains(position)) {
             for (int i = 0; i < mSelectedPositionList.size(); ++i) {
@@ -261,7 +276,7 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
         Log.d("SET", "selected : " + mSelectedPositionList.toString());
     }
 
-    private boolean checkAnswer(ArrayList<SetItemData> candidates) {
+    private boolean checkAnswer(Vector<SetItemData> candidates) {
         //TODO verifying
         if (candidates.size() != NUM_ANS_CARDS) {
             return false;
@@ -272,7 +287,6 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
         mSelectedPositionList.clear();
         if (target != null && !target.isSelected) {
             target.isSelected = true;
-            mSelectedAnswerList.add(target);
             return true;
         } else { //alreay found
             return false;
@@ -382,15 +396,22 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
                 .setListener(null);
     }
 
-    private void addFragment() {
-        mAnswerImageFragment = AnswerImageFragment.newInstance();
+    private void addNineCardFragment() {
         //TODO expend card type
         mNineCardFragment = NineCardFragment
                 .newInstance(NineCardFragment.CARD_TYPE_FILL_AS_PATTERN, true, this);
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.vs_container_ninecard, mNineCardFragment,
+                NineCardFragment.class.getSimpleName());
+        fragmentTransaction.commit();
+    }
+
+    private void addAnswerImageFragment() {
+        mAnswerImageFragment = AnswerImageFragment.newInstance();
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.vs_container_answer, mAnswerImageFragment);
-        fragmentTransaction.add(R.id.vs_container_ninecard, mNineCardFragment);
         fragmentTransaction.commit();
     }
 
@@ -405,7 +426,7 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
         mBtnStart.setOnClickListener(this);
         ViewUtil.setButtonColor(mBtnStart, getResources().getColor(R.color.colorAccent));
 
-        mPlayers = new ArrayList<>();
+        mPlayers = new Vector<>();
         for (int i = 0; i < NUM_MAX_PLAYER; ++i) {
             PlayerData player = new PlayerData();
             player.btnName = (Button)findViewById(getResources()
@@ -432,7 +453,7 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void initCards() {
-        mAllItemList = new ArrayList<>();
+        mAllItemList = new Vector<>();
         for(int color = 0; color < NUM_ANS_CARDS; ++color) {
             for (int shape = 0; shape < NUM_ANS_CARDS; ++shape) {
                 for (int fill = 0; fill < NUM_ANS_CARDS; ++fill) {
@@ -460,12 +481,32 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
             player.btnName.setText(player.name);
             ViewUtil.setButtonColor(player.btnName, player.color);
         }
-        mSelectedPositionList = new ArrayList<>();
+        mSelectedPositionList = new Vector<>();
         mAnswerMap = new HashMap<>();
-        mSelectedAnswerList = new ArrayList<>();
     }
 
     private void startGame() {
+        changeViewModeAsStart();
+        startNewStage();
+        mNowGameState = GAME_STATE_READY;
+        renewViews();
+    }
+
+    private void resumeGame() {
+        if (isSaved) {
+            if (mNowGameState != GAME_STATE_PREPARE) {
+                changeViewModeAsStart();
+                mNineCardFragment.setCards(mDeckList);
+                mNineCardFragment.selectCard(mSavedSelectedPositionList);
+                printStageTitle();
+                printSelectedAnswerList();
+            }
+            isSaved = false;
+        }
+        renewViews();
+    }
+
+    private void changeViewModeAsStart() {
         mBtnStart.setVisibility(View.GONE);
         for (PlayerData player : mPlayers) {
             player.name = player.btnName.getText().toString();
@@ -482,9 +523,6 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
             player.btnComplete.setVisibility(View.VISIBLE);
             player.btnComplete.setEnabled(true);
         }
-        startNewStage();
-        mNowGameState = GAME_STATE_READY;
-        renewViews();
     }
 
     private void renewViews() {
@@ -493,10 +531,8 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
         } else if (mNowGameState == GAME_STATE_READY) {
             setReadyState();
         } else if (mNowGameState == GAME_STATE_CALLED_SET) {
-            printAnswerInfo();
             setCalledSetState();
         } else if (mNowGameState == GAME_STATE_CHANCE_COMPLETE) {
-            printAnswerInfo();
             setChanceCompleteState();
         } else {
             Log.e("SET2", "invalid state!");
@@ -509,7 +545,7 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
         mAllItemListSequence = RandomNumberUtil.getInstance(calendar.getTimeInMillis())
                 .getRandomNumberSet(mAllItemList.size()); //3*3*3*1
         if (mDeckList == null) {
-            mDeckList = new ArrayList<>();
+            mDeckList = new Vector<>();
         } else {
             mDeckList.clear();
         }
@@ -525,7 +561,7 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
         for (int i = 0; i < mDeckList.size()-2; ++i) {
             for (int j = i + 1; j < mDeckList.size() - 1; ++j) {
                 for (int k = j + 1; k < mDeckList.size(); ++k) {
-                    ArrayList<SetItemData> candidates = new ArrayList<>();
+                    Vector<SetItemData> candidates = new Vector<>();
                     candidates.add(mDeckList.get(i));
                     candidates.add(mDeckList.get(j));
                     candidates.add(mDeckList.get(k));
@@ -536,27 +572,17 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
                 }
             }
         }
-        if (mSelectedAnswerList == null) {
-            Log.e("SET2", "error! mSelectedAnswerList is null");
-            mSelectedAnswerList = new ArrayList<>();
-        } else {
-            mSelectedAnswerList.clear();
-        }
         mTextSelectedList.setText("");
         mStage++;
-        //TODO change title like (3/10)
+        printStageTitle();
+        mNineCardFragment.setCards(mDeckList);
+    }
+
+    private void printStageTitle() {
         StringBuilder titleBuilder = new StringBuilder();
         titleBuilder.append(getResources().getString(R.string.vs_text_stage)).append("(")
                 .append(mStage).append("/").append(NUM_MAX_STAGE).append(")");
         mTextTitle.setText(titleBuilder.toString());
-        mNineCardFragment.setCards(mDeckList);
-    }
-
-    //for test
-    private void printAnswerInfo() {
-        //debug
-        Log.d("SET2", "mAnswerMap size = " + mAnswerMap.size());
-        Log.d("SET2", getAnswerInfoString());
     }
 
     private String getAnswerInfoString() {
@@ -602,7 +628,6 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
 
     private void setCalledSetState(){
         Log.d("SET2", "[state] setCalledSetState");
-        mNineCardFragment.unselectAllCard();
         mNineCardFragment.setClickable(true);
         mSelectedLayout.setBackgroundColor(mNowFlagedPlayer.color);
         enableAllButton(false);
@@ -706,7 +731,7 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
                             if (name == null || "".equalsIgnoreCase(name)) {
                                 name = getResources().getString(R.string.vs_text_player);
                             }
-                            mNowFlagedPlayer.textName.setText(name);
+                            mNowFlagedPlayer.name = name;
                             mNowFlagedPlayer.btnName.setText(name);
                         }
                     }
@@ -731,11 +756,15 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void printSelectedAnswerList() {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (SetAnswerData answer : mSelectedAnswerList) {
-            stringBuilder.append(answer.toString()).append("  ");
+        Iterator<String> it = mAnswerMap.keySet().iterator();
+        StringBuffer sb = new StringBuffer();
+        while (it.hasNext()) {
+            SetAnswerData data = mAnswerMap.get(it.next());
+            if (data.isSelected) {
+                sb.append(data.toString() + " ");
+            }
         }
-        mTextSelectedList.setText(stringBuilder.toString());
+        mTextSelectedList.setText(sb.toString());
     }
 
     class PlayerData {
@@ -753,7 +782,7 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
         public int color;
     }
 
-    class SetAnswerData implements Serializable {
+    class SetAnswerData implements Serializable, Parcelable {
         public int first;
         public int second;
         public int third;
@@ -765,7 +794,7 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
             this.second = b;
             this.third = c;
             int temp;
-            //TODO need to test
+
             if (first > second) {
                 temp = second;
                 second = first;
@@ -789,6 +818,16 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
             StringBuffer ret = new StringBuffer();
             return ret.append(this.first + 1).append(this.second + 1).append(this.third + 1)
                     .toString();
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel parcel, int i) {
+
         }
     }
 

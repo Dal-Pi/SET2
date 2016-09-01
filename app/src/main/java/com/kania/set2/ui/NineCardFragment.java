@@ -15,8 +15,8 @@ import com.kania.set2.R;
 import com.kania.set2.model.SetItemData;
 import com.kania.set2.util.RandomNumberUtil;
 
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Vector;
 
 public class NineCardFragment extends Fragment implements View.OnClickListener {
     public static final int CARD_TYPE_FILL_AS_PATTERN = 1;
@@ -68,6 +68,7 @@ public class NineCardFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mCardType = getArguments().getInt(ARG_CARD_TYPE, CARD_TYPE_FILL_AS_PATTERN);
             mNumberVisible = getArguments().getBoolean(ARG_NUMBER_VISIBLE, true);
@@ -158,7 +159,7 @@ public class NineCardFragment extends Fragment implements View.OnClickListener {
         mCallback = callback;
     }
 
-    public void setCards(ArrayList<SetItemData> items) {
+    public void setCards(Vector<SetItemData> items) {
         if (items == null) {
             Log.e("SET2", "error! items is null!");
             return;
@@ -198,7 +199,7 @@ public class NineCardFragment extends Fragment implements View.OnClickListener {
      * Only can select maximum 2 items.
      * @param items items to select.
      */
-    public void selectMatchedCard(ArrayList<SetItemData> items) {
+    public void selectMatchedCard(Vector<SetItemData> items) {
         if (items == null || items.size() >= NUM_ANS_CARDS) {
             Log.e("SET2", "error! items is wrong!");
             return;
@@ -214,7 +215,7 @@ public class NineCardFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    public void selectCard(ArrayList<Integer> positions) {
+    public void selectCard(Vector<Integer> positions) {
         if (positions.size() >= NUM_ANS_CARDS) {
             Log.d("SET2", "do not try to select over 3 cards");
         }
@@ -242,7 +243,7 @@ public class NineCardFragment extends Fragment implements View.OnClickListener {
             mSelectCount++;
 
             if (mSelectCount == NUM_ANS_CARDS) {
-                ArrayList<SetItemData> askData = new ArrayList<>();
+                Vector<SetItemData> askData = new Vector<>();
                 for (int i = 0; i < NUM_ALL_CARDS; ++i) {
                     if (mCardViewDataList[i].mIsChecked) {
                         askData.add(mCardViewDataList[i].getmSetitemData());
@@ -264,7 +265,7 @@ public class NineCardFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void initCardViewData(ArrayList<SetItemData> items) {
+    private void initCardViewData(Vector<SetItemData> items) {
         for (int i = 0; i < NUM_ALL_CARDS; ++i) {
             if (mCardViewDataList[i] == null) {
                 mCardViewDataList[i] = new CardViewData(items.get(i));
@@ -290,7 +291,7 @@ public class NineCardFragment extends Fragment implements View.OnClickListener {
     }
 
     public interface OnSelectThreeCardListener {
-        void onThreeCardSelected(ArrayList<SetItemData> selectedList);
+        void onThreeCardSelected(Vector<SetItemData> selectedList);
         void onSelectCard(int position);
     }
 
