@@ -66,6 +66,8 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
     public static final String KEY_ANSWER_MAP = "saved_answer_list";
     public static final String KEY_STAGE_NUM = "saved_stage_number";
 
+    public static final String DELIMETER = "/";
+
     public static final int ANIMATION_DURATION = 2000;
 
     public static final int GAME_STATE_PREPARE = 1;
@@ -163,11 +165,9 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
 
         if (mNowGameState != GAME_STATE_PREPARE) {
             mStage = savedInstanceState.getInt(KEY_STAGE_NUM, 0);
-            mDeckList = (Vector<SetItemData>)savedInstanceState.getSerializable(KEY_DECK_LIST);
-            mSavedSelectedPositionList = (Vector<Integer>)savedInstanceState
-                    .getSerializable(KEY_SELECTED_LIST);
-            mAnswerMap = (HashMap<String, SetAnswerData>)savedInstanceState
-                    .getSerializable(KEY_ANSWER_MAP);
+            restoreDeckList(savedInstanceState.getString(KEY_DECK_LIST));
+            restoreSelected(savedInstanceState.getString(KEY_SELECTED_LIST));
+            restoreAnswerMap(savedInstanceState.getString(KEY_ANSWER_MAP));
             isSaved = true;
         }
         //load end
@@ -192,9 +192,73 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
 
         if (mNowGameState != GAME_STATE_PREPARE) {
             outState.putInt(KEY_STAGE_NUM, mStage);
-            outState.putSerializable(KEY_DECK_LIST, mDeckList);
-            outState.putSerializable(KEY_SELECTED_LIST, mSelectedPositionList);
-            outState.putSerializable(KEY_ANSWER_MAP, mAnswerMap);
+            outState.putString(KEY_DECK_LIST, backupDeckList());
+            outState.putString(KEY_SELECTED_LIST, backupSelected());
+            outState.putString(KEY_ANSWER_MAP, backupAnswerMap());
+        }
+    }
+
+    private String backupDeckList() {
+        StringBuilder sb = new StringBuilder();
+        for (SetItemData data : mDeckList) {
+            sb.append(data.toString()).append(DELIMETER);
+        }
+        return sb.toString();
+    }
+    private void restoreDeckList(String deckListString) {
+        mDeckList = new Vector<>();
+        if(deckListString == null || "".equalsIgnoreCase(deckListString)) {
+            return;
+        }
+        String[] items = deckListString.split(DELIMETER);
+        for (int i = 0; i < NUM_ALL_CARDS; ++i) {
+            mDeckList.add(new SetItemData(
+                    Integer.parseInt(items[i].substring(0, 1)),
+                    Integer.parseInt(items[i].substring(1, 2)),
+                    Integer.parseInt(items[i].substring(2, 3)),
+                    Integer.parseInt(items[i].substring(3, 4))));
+        }
+    }
+
+    private String backupSelected() {
+        StringBuilder sb = new StringBuilder();
+        for (int pos : mSelectedPositionList) {
+            sb.append("" + pos).append(DELIMETER);
+        }
+        return sb.toString();
+    }
+    private void restoreSelected(String selectedListString) {
+        mSavedSelectedPositionList = new Vector<>();
+        if(selectedListString == null || "".equalsIgnoreCase(selectedListString)) {
+            return;
+        }
+        String[] positions = selectedListString.split(DELIMETER);
+        for (int i = 0; i < positions.length; ++i) {
+            mSavedSelectedPositionList.add(Integer.parseInt(positions[i]));
+        }
+    }
+
+    private String backupAnswerMap() {
+        StringBuilder sb = new StringBuilder();
+        Iterator<String> it = mAnswerMap.keySet().iterator();
+        while (it.hasNext()) {
+            sb.append(mAnswerMap.get(it.next()).toStringWithSelected()).append(DELIMETER);
+        }
+        return sb.toString();
+    }
+    private void restoreAnswerMap(String answerMapString) {
+        mAnswerMap = new HashMap<>();
+        if(answerMapString == null || "".equalsIgnoreCase(answerMapString)) {
+            return;
+        }
+        String[] answers = answerMapString.split(DELIMETER);
+        for (int i = 0; i < answers.length; ++i) {
+            SetAnswerData answer = new SetAnswerData(
+                    Integer.parseInt(answers[i].substring(0, 1)),
+                    Integer.parseInt(answers[i].substring(1, 2)),
+                    Integer.parseInt(answers[i].substring(2, 3)),
+                    "T".equalsIgnoreCase(answers[i].substring(3, 4)) ? true : false);
+            mAnswerMap.put(answer.toString(), answer);
         }
     }
 
@@ -590,7 +654,7 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
         StringBuffer sb = new StringBuffer();
         while (it.hasNext()) {
             SetAnswerData data = mAnswerMap.get(it.next());
-            sb.append(data.toString()).append("[").append(data.isSelected).append("]")
+            sb.append(data.toStringWithPlus1()).append("[").append(data.isSelected).append("]")
                     .append(" / ");
         }
         return sb.toString();
@@ -761,7 +825,7 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
         while (it.hasNext()) {
             SetAnswerData data = mAnswerMap.get(it.next());
             if (data.isSelected) {
-                sb.append(data.toString() + " ");
+                sb.append(data.toStringWithPlus1() + " ");
             }
         }
         mTextSelectedList.setText(sb.toString());
@@ -782,12 +846,17 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
         public int color;
     }
 
-    class SetAnswerData implements Serializable, Parcelable {
+    class SetAnswerData {
         public int first;
         public int second;
         public int third;
 
         public boolean isSelected;
+
+        public SetAnswerData(int a, int b, int c, boolean initSelected) {
+            this(a, b, c);
+            this.isSelected = initSelected;
+        }
 
         public SetAnswerData(int a, int b, int c) {
             this.first = a;
@@ -816,18 +885,19 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
         @Override
         public String toString() {
             StringBuffer ret = new StringBuffer();
-            return ret.append(this.first + 1).append(this.second + 1).append(this.third + 1)
+            return ret.append(this.first).append(this.second).append(this.third)
                     .toString();
         }
 
-        @Override
-        public int describeContents() {
-            return 0;
+        public String toStringWithSelected() {
+            StringBuffer ret = new StringBuffer(toString());
+            return ret.append(isSelected ? "T" : "F").toString();
         }
 
-        @Override
-        public void writeToParcel(Parcel parcel, int i) {
-
+        public String toStringWithPlus1() {
+            StringBuffer ret = new StringBuffer();
+            return ret.append(this.first + 1).append(this.second + 1).append(this.third + 1)
+                    .toString();
         }
     }
 
