@@ -6,6 +6,8 @@
     <string name="unknown_player">unknown</string>
     <string name="text_ok">OK</string>
     <string name="text_cancel">Cancel</string>
+    <string name="text_exit">exit</string>
+    <string name="text_backpress">Tap the Back button one more time to exit</string>
 
     <string name="main_btn_time">Time Attack Mode</string>
     <string name="main_btn_vs">VS Mode</string>
@@ -34,7 +36,7 @@
     <string name="rank_text_name">Name</string>
     <string name="rank_text_score">Score</string>
     <string name="rank_text_date">Date</string>
-    <string name="rank_text_exit">exit</string>
+
 
     <string name="vs_text_stage">Stage</string>
     <string name="vs_text_player">Player</string>
@@ -46,12 +48,22 @@
     <string name="vs_text_dialog_win_postfix">Win!</string>
     <string name="vs_text_dialog_draw">Draw!</string>
     <string name="vs_text_dialog_pass_title">Pass stage</string>
-    <string name="vs_text_dialog_pass_desc">Show all answer and end stage. \n(Pass stage by selecting again)</string>
+    <string name="vs_text_dialog_pass_desc">Show all answer and end stage.</string>
     <string name="vs_text_dialog_pass_ok">Show answer</string>
+    <string name="vs_text_pass_guide">Tap the Next button to pass next stage</string>
     <string name="vs_btn_set">Set</string>
     <string name="vs_btn_complete">Complete</string>
     <string name="vs_btn_start">Start</string>
     <string name="vs_btn_pass">Pass</string>
     <string name="vs_btn_next">Next</string>
+
+    <string name="help_about_games">[help_about_games]</string>
+    <string name="help_set_1">[help_set_1]</string>
+    <string name="help_set_2">[help_set_2]</string>
+    <string name="help_set_3">[help_set_3]</string>
+    <string name="help_set_4">[help_set_4]</string>
+    <string name="help_set_5">[help_set_5]</string>
+    <string name="help_set_6">[help_set_6]</string>
+    <string name="help_set_7">[help_set_7]</string>
 
 </resources>

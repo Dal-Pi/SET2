@@ -51,7 +51,7 @@
             style="@style/setControlButtonStyle"
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
-            android:text="@string/rank_text_exit"/>
+            android:text="@string/text_exit"/>
 
     </RelativeLayout>
 

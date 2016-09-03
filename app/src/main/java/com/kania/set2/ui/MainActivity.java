@@ -94,8 +94,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mState = STATE_TIMEATTACK_BUTTONS;
                 break;
             case R.id.main_buttons_btn_vsmode:
-                //TODO not implement yet
-                Toast.makeText(this, "not implemented yet", Toast.LENGTH_SHORT).show();
                 intent = new Intent(this, VsModeActivity.class);
                 startActivity(intent);
                 break;

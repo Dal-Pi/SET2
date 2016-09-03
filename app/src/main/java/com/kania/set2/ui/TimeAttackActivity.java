@@ -3,6 +3,7 @@ package com.kania.set2.ui;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
@@ -21,7 +22,9 @@ import com.kania.set2.model.SetRankData;
 import com.kania.set2.util.RandomNumberUtil;
 import com.kania.set2.model.SetItemData;
 import com.kania.set2.model.SetVerifier;
+import com.kania.set2.util.SetGameUtil;
 import com.kania.set2.util.SetRankUtil;
+import com.kania.set2.util.SetSaveStateUtil;
 import com.kania.set2.util.ViewUtil;
 
 import java.util.ArrayList;
@@ -46,7 +49,6 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
     public static final String KEY_REMAIN_TIME = "saved_remain_time";
     public static final String KEY_SCORE = "saved_score";
     public static final String KEY_HINT_COUNT = "saved_hint_count";
-    //TODO need to save color? if so using seed or array?
     public static final String KEY_ANSWER_LIST = "saved_answer_list";
     public static final String KEY_DECK_LIST = "saved_deck_list";
     public static final String KEY_SELECTED_LIST = "saved_selected_list";
@@ -55,6 +57,8 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
 
     //utils
     private RandomNumberUtil mRandomNumberUtil;
+    private CountDownTimer mBackTimer;
+    private boolean mIsNowBackTimer;
 
     //game data
     private int mDifficulty;
@@ -116,9 +120,39 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
         outState.putInt(KEY_REMAIN_TIME, mRemainTime);
         outState.putInt(KEY_SCORE, mScore);
         outState.putInt(KEY_HINT_COUNT, mHintCount);
-        outState.putSerializable(KEY_ANSWER_LIST, mAnswerList);
-        outState.putSerializable(KEY_DECK_LIST, mDeckList);
-        outState.putSerializable(KEY_SELECTED_LIST, mSelectedPositionList);
+        outState.putString(KEY_ANSWER_LIST, SetSaveStateUtil.backupSetItemDataList(mAnswerList));
+        outState.putString(KEY_DECK_LIST, SetSaveStateUtil.backupSetItemDataList(mDeckList));
+        outState.putString(KEY_SELECTED_LIST,
+                SetSaveStateUtil.backupIntegerList(mSelectedPositionList));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mBackTimer != null) {
+            mBackTimer.cancel();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mBackTimer != null && mIsNowBackTimer) {
+            super.onBackPressed();
+        } else {
+            mIsNowBackTimer = true;
+            SetGameUtil.showBackpressToast(getApplicationContext());
+            mBackTimer = new CountDownTimer(SetGameUtil.NUM_END_TIMER_COUNT,
+                    SetGameUtil.NUM_END_TIMER_COUNT) {
+                @Override
+                public void onTick(long l) {
+                    //do noting
+                }
+                @Override
+                public void onFinish() {
+                    mIsNowBackTimer = false;
+                }
+            }.start();
+        }
     }
 
     @Override
@@ -209,11 +243,12 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
             mRemainTime = savedInstanceState.getInt(KEY_REMAIN_TIME);;
             mScore = savedInstanceState.getInt(KEY_SCORE);
             mHintCount = savedInstanceState.getInt(KEY_HINT_COUNT);
-            mAnswerList = (Vector<SetItemData>)savedInstanceState
-                    .getSerializable(KEY_ANSWER_LIST);
-            mDeckList = (Vector<SetItemData>)savedInstanceState.getSerializable(KEY_DECK_LIST);
-            mSavedSelectedPositionList = (Vector<Integer>)savedInstanceState
-                    .getSerializable(KEY_SELECTED_LIST);
+            mAnswerList = SetSaveStateUtil.restoreSetItemDataList(
+                    savedInstanceState.getString(KEY_ANSWER_LIST));
+            mDeckList = SetSaveStateUtil.restoreSetItemDataList(
+                    savedInstanceState.getString(KEY_DECK_LIST));
+            mSavedSelectedPositionList = SetSaveStateUtil.restoreIntegerList(
+                    savedInstanceState.getString(KEY_SELECTED_LIST));
             mIsExistSavedQuestion = true;
         } else {
             mRemainTime = GAME_TIME;
@@ -331,7 +366,6 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
         if (secondItem != null) {ret.add(secondItem);}
         if (thirdItem != null) {ret.add(thirdItem);}
 
-        //TODO verifying
         if (ret.size() != NUM_ANS_CARDS || !SetVerifier.isValidSet(ret)) {
             return null;
         }
@@ -381,7 +415,6 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
             }
         }
 
-        //TODO verifying
         if (ret.size() != NUM_ALL_CARDS) {
             return null;
         }
@@ -394,7 +427,6 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
     }
 
     private boolean checkAnswer(Vector<SetItemData> candidates) {
-        //TODO verifying
         if (candidates.size() != NUM_ANS_CARDS) {
             return false;
         }
@@ -455,7 +487,6 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void selectHint() {
-        //TODO when click hint
         mHintCount = mHintCount >= 2 ? mHintCount : (mHintCount + 1);
         presentHint();
     }

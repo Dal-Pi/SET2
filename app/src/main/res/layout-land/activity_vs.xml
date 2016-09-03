@@ -23,7 +23,7 @@
 
         <Button
             android:id="@+id/vs_btn_pass"
-            style="@style/setZeroPaddingButtonStyle"
+            style="@style/setControlButtonStyle"
             android:text="@string/vs_btn_pass"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"

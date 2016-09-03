@@ -4,13 +4,13 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
-import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -22,11 +22,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kania.set2.R;
 import com.kania.set2.model.SetItemData;
 import com.kania.set2.model.SetVerifier;
 import com.kania.set2.util.RandomNumberUtil;
+import com.kania.set2.util.SetGameUtil;
+import com.kania.set2.util.SetSaveStateUtil;
 import com.kania.set2.util.ViewUtil;
 
 import java.util.Calendar;
@@ -67,8 +70,6 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
     public static final String KEY_ANSWER_MAP = "saved_answer_list";
     public static final String KEY_STAGE_NUM = "saved_stage_number";
 
-    public static final String DELIMETER = "/";
-
     public static final int ANIMATION_DURATION = 2000;
 
     public static final int GAME_STATE_PREPARE = 1;
@@ -82,7 +83,8 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
     //utils
     private SetHandler mSetTimerHandler;
     private boolean isSaved = false;
-
+    private CountDownTimer mBackTimer;
+    private boolean mIsNowBackTimer;
 
     //game data
     private int mStage;
@@ -160,9 +162,11 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
 
         if (mNowGameState != GAME_STATE_PREPARE) {
             mStage = savedInstanceState.getInt(KEY_STAGE_NUM, 0);
-            restoreDeckList(savedInstanceState.getString(KEY_DECK_LIST));
-            restoreSelected(savedInstanceState.getString(KEY_SELECTED_LIST));
-            restoreAnswerMap(savedInstanceState.getString(KEY_ANSWER_MAP));
+            mDeckList = SetSaveStateUtil.restoreSetItemDataList(
+                    savedInstanceState.getString(KEY_DECK_LIST));
+            mSavedSelectedPositionList = SetSaveStateUtil.restoreIntegerList(
+                    savedInstanceState.getString(KEY_SELECTED_LIST));
+            mAnswerMap = restoreAnswerMap(savedInstanceState.getString(KEY_ANSWER_MAP));
             isSaved = true;
         }
         //load end
@@ -187,74 +191,38 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
 
         if (mNowGameState != GAME_STATE_PREPARE) {
             outState.putInt(KEY_STAGE_NUM, mStage);
-            outState.putString(KEY_DECK_LIST, backupDeckList());
-            outState.putString(KEY_SELECTED_LIST, backupSelected());
-            outState.putString(KEY_ANSWER_MAP, backupAnswerMap());
+            outState.putString(KEY_DECK_LIST, SetSaveStateUtil.backupSetItemDataList(mDeckList));
+            outState.putString(KEY_SELECTED_LIST,
+                    SetSaveStateUtil.backupIntegerList(mSelectedPositionList));
+            outState.putString(KEY_ANSWER_MAP, backupAnswerMap(mAnswerMap));
         }
     }
 
-    private String backupDeckList() {
+    private String backupAnswerMap(HashMap<String, VsModeActivity.SetAnswerData> map) {
         StringBuilder sb = new StringBuilder();
-        for (SetItemData data : mDeckList) {
-            sb.append(data.toString()).append(DELIMETER);
-        }
-        return sb.toString();
-    }
-    private void restoreDeckList(String deckListString) {
-        mDeckList = new Vector<>();
-        if(deckListString == null || "".equalsIgnoreCase(deckListString)) {
-            return;
-        }
-        String[] items = deckListString.split(DELIMETER);
-        for (int i = 0; i < NUM_ALL_CARDS; ++i) {
-            mDeckList.add(new SetItemData(
-                    Integer.parseInt(items[i].substring(0, 1)),
-                    Integer.parseInt(items[i].substring(1, 2)),
-                    Integer.parseInt(items[i].substring(2, 3)),
-                    Integer.parseInt(items[i].substring(3, 4))));
-        }
-    }
-
-    private String backupSelected() {
-        StringBuilder sb = new StringBuilder();
-        for (int pos : mSelectedPositionList) {
-            sb.append("" + pos).append(DELIMETER);
-        }
-        return sb.toString();
-    }
-    private void restoreSelected(String selectedListString) {
-        mSavedSelectedPositionList = new Vector<>();
-        if(selectedListString == null || "".equalsIgnoreCase(selectedListString)) {
-            return;
-        }
-        String[] positions = selectedListString.split(DELIMETER);
-        for (int i = 0; i < positions.length; ++i) {
-            mSavedSelectedPositionList.add(Integer.parseInt(positions[i]));
-        }
-    }
-
-    private String backupAnswerMap() {
-        StringBuilder sb = new StringBuilder();
-        Iterator<String> it = mAnswerMap.keySet().iterator();
+        Iterator<String> it = map.keySet().iterator();
         while (it.hasNext()) {
-            sb.append(mAnswerMap.get(it.next()).toStringWithSelected()).append(DELIMETER);
+            sb.append(map.get(it.next()).toStringWithSelected())
+                    .append(SetSaveStateUtil.DELIMETER);
         }
         return sb.toString();
     }
-    private void restoreAnswerMap(String answerMapString) {
-        mAnswerMap = new HashMap<>();
+
+    private HashMap<String, VsModeActivity.SetAnswerData> restoreAnswerMap(String answerMapString) {
+        HashMap<String, VsModeActivity.SetAnswerData> retMap = new HashMap<>();
         if(answerMapString == null || "".equalsIgnoreCase(answerMapString)) {
-            return;
+            return null;
         }
-        String[] answers = answerMapString.split(DELIMETER);
+        String[] answers = answerMapString.split(SetSaveStateUtil.DELIMETER);
         for (int i = 0; i < answers.length; ++i) {
-            SetAnswerData answer = new SetAnswerData(
+            VsModeActivity.SetAnswerData answer = new VsModeActivity.SetAnswerData(
                     Integer.parseInt(answers[i].substring(0, 1)),
                     Integer.parseInt(answers[i].substring(1, 2)),
                     Integer.parseInt(answers[i].substring(2, 3)),
                     "T".equalsIgnoreCase(answers[i].substring(3, 4)) ? true : false);
-            mAnswerMap.put(answer.toString(), answer);
+            retMap.put(answer.toString(), answer);
         }
+        return retMap;
     }
 
     @Override
@@ -262,6 +230,30 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
         super.onDestroy();
         mSetTimerHandler.removeMessages(MESSAGE_WHAT_SET);
         mSetTimerHandler.removeMessages(MESSAGE_WHAT_COMPLETE);
+        if (mBackTimer != null) {
+            mBackTimer.cancel();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mBackTimer != null && mIsNowBackTimer) {
+            super.onBackPressed();
+        } else {
+            mIsNowBackTimer = true;
+            SetGameUtil.showBackpressToast(getApplicationContext());
+            mBackTimer = new CountDownTimer(SetGameUtil.NUM_END_TIMER_COUNT,
+                    SetGameUtil.NUM_END_TIMER_COUNT) {
+                @Override
+                public void onTick(long l) {
+                    //do noting
+                }
+                @Override
+                public void onFinish() {
+                    mIsNowBackTimer = false;
+                }
+            }.start();
+        }
     }
 
     @Override
@@ -725,6 +717,8 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
         mBtnPass.setText(getString(R.string.vs_btn_next));
         enablePlayerButton(false);
         mTextSelectedList.setText(getAnswerInfoString());
+        Toast.makeText(getApplicationContext(), R.string.vs_text_pass_guide, Toast.LENGTH_SHORT)
+                .show();
     }
 
     private void setEndState() {
