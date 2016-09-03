@@ -45,9 +45,13 @@
     <string name="vs_text_dialog_title">Result</string>
     <string name="vs_text_dialog_win_postfix">Win!</string>
     <string name="vs_text_dialog_draw">Draw!</string>
+    <string name="vs_text_dialog_pass_title">Pass stage</string>
+    <string name="vs_text_dialog_pass_desc">Show all answer and end stage. \n(Pass stage by selecting again)</string>
+    <string name="vs_text_dialog_pass_ok">Show answer</string>
     <string name="vs_btn_set">Set</string>
     <string name="vs_btn_complete">Complete</string>
     <string name="vs_btn_start">Start</string>
-    <string name="vs_btn_giveup">Give Up</string>
+    <string name="vs_btn_pass">Pass</string>
+    <string name="vs_btn_next">Next</string>
 
 </resources>

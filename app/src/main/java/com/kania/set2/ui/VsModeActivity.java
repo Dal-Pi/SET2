@@ -6,12 +6,14 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +29,6 @@ import com.kania.set2.model.SetVerifier;
 import com.kania.set2.util.RandomNumberUtil;
 import com.kania.set2.util.ViewUtil;
 
-import java.io.Serializable;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -75,6 +76,9 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
     public static final int GAME_STATE_CALLED_SET = 3;
     public static final int GAME_STATE_CHANCE_COMPLETE = 4;
 
+    public static final int GAME_STATE_PASS = 5;
+    public static final int GAME_STATE_END_GAME = 6;
+
     //utils
     private SetHandler mSetTimerHandler;
     private boolean isSaved = false;
@@ -89,7 +93,7 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
     private int[] mAllItemListSequence;
     private HashMap<String, SetAnswerData> mAnswerMap;
     private Vector<SetItemData> mDeckList;
-    private Vector<Integer> mSelectedPositionList = new Vector<>(); //TODO why?
+    private Vector<Integer> mSelectedPositionList = new Vector<>();
     private Vector<Integer> mSavedSelectedPositionList;
     private int mNowGameState;
     private Vector<PlayerData> mPlayers;
@@ -102,6 +106,7 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
     //layout
     private ViewGroup mSelectedLayout;
     private Button mBtnStart;
+    private Button mBtnPass;
     private TextView mTextTitle;
     private TextView mTextSelectedList;
 
@@ -110,18 +115,8 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_vs);
-
-//        FragmentManager fm = getFragmentManager();
-//        mNineCardFragment = (NineCardFragment)fm
-//                .findFragmentByTag(NineCardFragment.class.getSimpleName());
-//        mAnswerImageFragment = (AnswerImageFragment)fm
-//                .findFragmentByTag(AnswerImageFragment.class.getSimpleName());
-//        if (mNineCardFragment == null) {
-            addNineCardFragment();
-//        }
-//        if (mAnswerImageFragment == null) {
-            addAnswerImageFragment();
-//        }
+        addNineCardFragment();
+        addAnswerImageFragment();
 
         mSetTimerHandler = new SetHandler();
 
@@ -305,9 +300,8 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
                 mNowFlagedPlayer = mPlayers.get(1);
                 changeName();
                 break;
-            //easter egg
-            case R.id.vs_text_title:
-                mTextSelectedList.setText(getAnswerInfoString());
+            case R.id.vs_btn_pass:
+                callPass();
                 break;
         }
     }
@@ -341,7 +335,6 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private boolean checkAnswer(Vector<SetItemData> candidates) {
-        //TODO verifying
         if (candidates.size() != NUM_ANS_CARDS) {
             return false;
         }
@@ -376,14 +369,17 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
     private void succeedToComplete() {
         addScore(NUM_SCORE_COMPLETE_SUCCEED);
         setNotiImage(true);
+        goNextStage();
+    }
 
+    private void goNextStage() {
         if (mStage < NUM_MAX_STAGE) {
             startNewStage();
             mNowGameState = GAME_STATE_READY;
-            renewViews();
         } else {
-            showResultDialog();
+            mNowGameState = GAME_STATE_END_GAME;
         }
+        renewViews();
     }
 
     private void showResultDialog() {
@@ -406,22 +402,22 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
         int winnerColor;
         if (mPlayers.get(0).score > mPlayers.get(1).score) {
             winnerString = mPlayers.get(0).name + " "
-                    + getResources().getString(R.string.vs_text_dialog_win_postfix);
+                    + getString(R.string.vs_text_dialog_win_postfix);
             winnerColor = mPlayers.get(0).color;
         } else if (mPlayers.get(0).score < mPlayers.get(1).score) {
             winnerString = mPlayers.get(1).name + " "
-                    + getResources().getString(R.string.vs_text_dialog_win_postfix);
+                    + getString(R.string.vs_text_dialog_win_postfix);
             winnerColor = mPlayers.get(1).color;
         } else {
-            winnerString = getResources().getString(R.string.vs_text_dialog_draw);
+            winnerString = getString(R.string.vs_text_dialog_draw);
             winnerColor = getResources().getColor(R.color.colorAccent);
         }
         textWinner.setText(winnerString);
         textWinner.setTextColor(winnerColor);
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setTitle(getResources().getString(R.string.vs_text_dialog_title))
+                .setTitle(getString(R.string.vs_text_dialog_title))
                 .setView(layout)
-                .setPositiveButton(getResources().getString(R.string.text_ok),
+                .setPositiveButton(getString(R.string.text_ok),
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -481,14 +477,14 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
 
     private void initViews() {
         mTextTitle = (TextView)findViewById(R.id.vs_text_title);
-        //easter egg start
         mSelectedLayout = (ViewGroup)findViewById(R.id.vs_layout_ninecard);
         mTextSelectedList = (TextView)findViewById(R.id.vs_text_info);
-        mTextTitle.setOnClickListener(this);
         //easter egg end
         mBtnStart = (Button)findViewById(R.id.vs_btn_start);
         mBtnStart.setOnClickListener(this);
         ViewUtil.setButtonColor(mBtnStart, getResources().getColor(R.color.colorAccent));
+        mBtnPass = (Button)findViewById(R.id.vs_btn_pass);
+        mBtnPass.setOnClickListener(this);
 
         mPlayers = new Vector<>();
         for (int i = 0; i < NUM_MAX_PLAYER; ++i) {
@@ -538,7 +534,7 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
         Log.d("SET2", "randomIndexs = " + randomIndexs.toString());
         for (int i = 0; i < mPlayers.size(); ++i) {
             PlayerData player = mPlayers.get(i);
-            player.name = getResources().getString(R.string.vs_text_player) + (i + 1);
+            player.name = getString(R.string.vs_text_player) + (i + 1);
             player.score = 0;
             player.color = colors[randomIndexs[i]];
             player.textName.setTextColor(player.color);
@@ -580,8 +576,7 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
             player.textName.setText(player.name);
             player.textRemainTime.setVisibility(View.VISIBLE);
             player.textScore.setVisibility(View.VISIBLE);
-            player.textScore.setText(getResources().getString(R.string.vs_text_score)
-                    + " : " + player.score);
+            player.textScore.setText(getString(R.string.vs_text_score) + " : " + player.score);
             player.btnSet.setVisibility(View.VISIBLE);
             player.btnSet.setEnabled(true);
             player.btnComplete.setVisibility(View.VISIBLE);
@@ -598,6 +593,10 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
             setCalledSetState();
         } else if (mNowGameState == GAME_STATE_CHANCE_COMPLETE) {
             setChanceCompleteState();
+        } else if (mNowGameState == GAME_STATE_PASS) {
+            setPassState();
+        } else if (mNowGameState == GAME_STATE_END_GAME) {
+            setEndState();
         } else {
             Log.e("SET2", "invalid state!");
         }
@@ -644,28 +643,35 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
 
     private void printStageTitle() {
         StringBuilder titleBuilder = new StringBuilder();
-        titleBuilder.append(getResources().getString(R.string.vs_text_stage)).append("(")
+        titleBuilder.append(getString(R.string.vs_text_stage)).append("(")
                 .append(mStage).append("/").append(NUM_MAX_STAGE).append(")");
         mTextTitle.setText(titleBuilder.toString());
     }
 
-    private String getAnswerInfoString() {
+    private SpannableStringBuilder getAnswerInfoString() {
         Iterator<String> it = mAnswerMap.keySet().iterator();
-        StringBuffer sb = new StringBuffer();
+        SpannableStringBuilder coloredString = new SpannableStringBuilder();
         while (it.hasNext()) {
             SetAnswerData data = mAnswerMap.get(it.next());
-            sb.append(data.toStringWithPlus1()).append("[").append(data.isSelected).append("]")
-                    .append(" / ");
+            String answer = data.toStringWithPlus1();
+            int start = coloredString.length();
+            int end = start + answer.length();
+            coloredString.append(answer).append(" ");
+            if (!data.isSelected) {
+                coloredString.setSpan(
+                        new ForegroundColorSpan(getResources().getColor(R.color.colorAccent)),
+                        start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
         }
-        return sb.toString();
+        return coloredString;
     }
 
     //state methods [start]
     private void setPrepareState() {
         Log.d("SET2", "[state] setPrepareState");
         mBtnStart.setVisibility(View.VISIBLE);
-
-        enableAllButton(false);
+        mBtnPass.setVisibility(View.INVISIBLE);
+        enablePlayerButton(false);
         for (PlayerData player : mPlayers) {
             player.textRemainTime.setVisibility(View.INVISIBLE);
             player.btnSet.setVisibility(View.INVISIBLE);
@@ -680,10 +686,13 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
 
     private void setReadyState() {
         Log.d("SET2", "[state] setReadyState");
+        mBtnPass.setVisibility(View.VISIBLE);
+        mBtnPass.setText(getString(R.string.vs_btn_pass));
+        enablePassButton(true);
         mNineCardFragment.unselectAllCard();
         mNineCardFragment.setClickable(false);
         mSelectedLayout.setBackgroundColor(getResources().getColor(R.color.base_white));
-        enableAllButton(true);
+        enablePlayerButton(true);
         for (PlayerData player : mPlayers) {
             player.textRemainTime.setText("");
         }
@@ -692,33 +701,45 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
 
     private void setCalledSetState(){
         Log.d("SET2", "[state] setCalledSetState");
+        enablePassButton(false);
         mNineCardFragment.setClickable(true);
         mSelectedLayout.setBackgroundColor(mNowFlagedPlayer.color);
-        enableAllButton(false);
+        enablePlayerButton(false);
         mSetTimerHandler.sendEmptyMessage(MESSAGE_WHAT_SET);
     }
 
     private void setChanceCompleteState() {
         Log.d("SET2", "[state] setChanceCompleteState");
+        enablePassButton(false);
         mNineCardFragment.unselectAllCard();
         mNineCardFragment.setClickable(false);
         mSelectedLayout.setBackgroundColor(getResources().getColor(R.color.base_white));
-        enableAllButton(false);
+        enablePlayerButton(false);
         mNowFlagedPlayer.btnComplete.setEnabled(true);
         ViewUtil.setButtonColor(mNowFlagedPlayer.btnComplete, mNowFlagedPlayer.color);
         mSetTimerHandler.sendEmptyMessage(MESSAGE_WHAT_COMPLETE);
     }
+
+    private void setPassState() {
+        enablePassButton(true);
+        mBtnPass.setText(getString(R.string.vs_btn_next));
+        enablePlayerButton(false);
+        mTextSelectedList.setText(getAnswerInfoString());
+    }
+
+    private void setEndState() {
+        showResultDialog();
+    }
     //state methods [end]
 
     private void printScore(PlayerData player) {
-        player.textScore.setText(getResources().getString(R.string.vs_text_score)
-                + " : " + player.score);
+        player.textScore.setText(getString(R.string.vs_text_score) + " : " + player.score);
         player.textScorePlus.setVisibility(View.VISIBLE);
         player.textScorePlus.setText(player.plusScore > 0 ?
                 "+" + player.plusScore : "" + player.plusScore);
     }
 
-    private void enableAllButton(boolean enable) {
+    private void enablePlayerButton(boolean enable) {
         for (PlayerData player : mPlayers) {
             player.btnSet.setEnabled(enable);
             player.btnComplete.setEnabled(enable);
@@ -731,6 +752,15 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
                 ViewUtil.setButtonColor(player.btnComplete, getResources()
                         .getColor(R.color.base_lightgray));
             }
+        }
+    }
+
+    private void enablePassButton(boolean enable) {
+        mBtnPass.setEnabled(enable);
+        if (enable) {
+            ViewUtil.setButtonColor(mBtnPass, getResources().getColor(R.color.colorAccent));
+        } else {
+            ViewUtil.setButtonColor(mBtnPass, getResources().getColor(R.color.base_lightgray));
         }
     }
 
@@ -783,29 +813,57 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
     private void changeName() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final EditText editName = new EditText(this);
-        editName.setHint(getResources().getString(R.string.vs_text_player_hint));
+        editName.setHint(R.string.vs_text_player_hint);
         editName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
         builder.setView(editName)
-                .setTitle(getResources().getString(R.string.vs_text_player_dialog_title))
-                .setPositiveButton(getResources().getString(R.string.text_ok), new DialogInterface.OnClickListener() {
+                .setTitle(R.string.vs_text_player_dialog_title)
+                .setPositiveButton(R.string.text_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (mNowFlagedPlayer != null) {
                             String name = editName.getText().toString();
                             if (name == null || "".equalsIgnoreCase(name)) {
-                                name = getResources().getString(R.string.vs_text_player);
+                                name = getString(R.string.vs_text_player);
                             }
                             mNowFlagedPlayer.name = name;
                             mNowFlagedPlayer.btnName.setText(name);
                         }
                     }
-                }).setNegativeButton(getResources().getString(R.string.text_cancel),
+                }).setNegativeButton(R.string.text_cancel,
                 new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
 
-                    }
+                        }
                 }).show();
+    }
+
+    private void callPass() {
+        if (mNowGameState == GAME_STATE_READY) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.vs_text_dialog_pass_title)
+                    .setMessage(R.string.vs_text_dialog_pass_desc)
+                    .setPositiveButton(R.string.vs_text_dialog_pass_ok,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    mNowGameState = GAME_STATE_PASS;
+                                    renewViews();
+                                }
+                            }).setNegativeButton(R.string.text_cancel,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                }
+                            }).show();
+        } else if (mNowGameState == GAME_STATE_PASS) {
+            goNextStage();
+        }
+    }
+
+    private void showAllAnswer(){
+
     }
 
     private boolean isNowComplete() {

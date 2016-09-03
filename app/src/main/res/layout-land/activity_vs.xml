@@ -16,10 +16,18 @@
             android:id="@+id/vs_text_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             android:layout_centerInParent="true"
             android:clickable="true"
             android:text="@string/vs_text_title_start"/>
+
+        <Button
+            android:id="@+id/vs_btn_pass"
+            style="@style/setZeroPaddingButtonStyle"
+            android:text="@string/vs_btn_pass"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            />
     </RelativeLayout>
 
     <LinearLayout
