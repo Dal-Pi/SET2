@@ -13,6 +13,9 @@
         <item>@color/pastel_blue</item>
         <item>@color/pastel_pink</item>
         <item>@color/pastel_green</item>
-
+        <item>@color/pastel_navy</item>
+        <item>@color/pastel_purple</item>
+        <item>@color/pastel_orange</item>
+        <item>@color/pastel_gray</item>
     </array>
 </resources>
