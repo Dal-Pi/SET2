@@ -7,6 +7,8 @@
     <!-- need to expend other resolutions. -->
     <dimen name="activity_margin_all">5dp</dimen>
 
+    <dimen name="main_title_font_size">100dp</dimen>
+
     <dimen name="ninecard_margin_card_layout">1dp</dimen>
     <dimen name="ninecard_margin_card_image">5dp</dimen>
     <dimen name="ninecard_margin_card_text">5dp</dimen>

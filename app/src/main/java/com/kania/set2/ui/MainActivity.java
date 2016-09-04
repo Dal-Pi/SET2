@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kania.set2.R;
@@ -32,10 +33,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button mBtnTimeAttackEasy;
     private Button mBtnTimeAttackHard;
 
+    private TextView mTextTitle;
+    private View mViewDivider;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mTextTitle = (TextView)findViewById(R.id.main_text_title);
+        mViewDivider = (View)findViewById(R.id.main_divider);
 
         mLayoutMainButtons = (ViewGroup)findViewById(R.id.main_layout_main_buttons);
         mLayoutTimeAttackButtons = (ViewGroup)findViewById(
@@ -72,8 +79,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int randomIndex = RandomNumberUtil.getInstance(calendar.getTimeInMillis())
                 .getRandomNumber(colors.length);
 
-        ViewGroup layoutTitle = (ViewGroup)findViewById(R.id.main_layout_bg_title);
-        layoutTitle.setBackgroundColor(colors[randomIndex]);
+        //TODO disable yet
+        //ViewGroup layoutTitle = (ViewGroup)findViewById(R.id.main_layout_bg_title);
+        //layoutTitle.setBackgroundColor(colors[randomIndex]);
+        mTextTitle.setTextColor(colors[randomIndex]);
+        mViewDivider.setBackgroundColor(colors[randomIndex]);
 
         ViewUtil.setButtonColor(mBtnTimeAttack, colors[randomIndex]);
         ViewUtil.setButtonColor(mBtnVsMode, colors[randomIndex]);

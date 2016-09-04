@@ -203,7 +203,7 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
         mAnswerImageFragment = AnswerImageFragment.newInstance();
         //TODO expend card type
         mNineCardFragment = NineCardFragment
-                .newInstance(NineCardFragment.CARD_TYPE_FILL_AS_PATTERN, true, this);
+                .newInstance(NineCardFragment.CARD_TYPE_FILL_AS_PATTERN, false, this);
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.timeattack_container_answer, mAnswerImageFragment);
