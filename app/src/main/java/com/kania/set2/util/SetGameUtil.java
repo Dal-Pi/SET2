@@ -11,7 +11,7 @@ import com.kania.set2.R;
 
 public class SetGameUtil {
 
-    public static final int NUM_END_TIMER_COUNT = 5000;
+    public static final int NUM_END_TIMER_COUNT = 3000;
 
     public static void showBackpressToast(Context context) {
         Toast.makeText(context, R.string.text_backpress, Toast.LENGTH_SHORT).show();

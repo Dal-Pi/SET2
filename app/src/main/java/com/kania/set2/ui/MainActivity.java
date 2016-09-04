@@ -98,8 +98,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
             case R.id.main_buttons_btn_howtoplay:
-                //TODO not implement yet
-                Toast.makeText(this, "not implemented yet", Toast.LENGTH_SHORT).show();
+                intent = new Intent(this, HelpActivity.class);
+                startActivity(intent);
                 break;
             case R.id.main_buttons_btn_rank:
                 intent = new Intent(this, RankActivity.class);

@@ -294,7 +294,6 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
     private void askQuestion() {
         mNineCardFragment.setCards(mDeckList);
         if (mSavedSelectedPositionList != null && mSavedSelectedPositionList.size() > 0) { //if exist saved question
-            //TODO
             mNineCardFragment.selectCard(mSavedSelectedPositionList);
         }
     }
@@ -483,6 +482,7 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
         mResultLayout.setVisibility(View.VISIBLE);
         mTextRemainTime.setText(getResources().getText(R.string.timeattack_text_end));
         mBtnHint.setEnabled(false);
+        ViewUtil.setButtonColor(mBtnHint, getResources().getColor(R.color.base_lightgray));
         mNineCardFragment.setClickable(false);
     }
 

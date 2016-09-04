@@ -12,7 +12,7 @@
     <string name="main_btn_time">Time Attack Mode</string>
     <string name="main_btn_vs">VS Mode</string>
     <string name="main_btn_how">How To Play</string>
-    <string name="main_btn_rank">Rank</string>
+    <string name="main_btn_rank">Rank (Time Attack Mode)</string>
 
     <string name="timeattack_text_end">End!</string>
     <string name="timeattack_text_score">Score</string>
@@ -57,13 +57,22 @@
     <string name="vs_btn_pass">Pass</string>
     <string name="vs_btn_next">Next</string>
 
-    <string name="help_about_games">[help_about_games]</string>
-    <string name="help_set_1">[help_set_1]</string>
-    <string name="help_set_2">[help_set_2]</string>
-    <string name="help_set_3">[help_set_3]</string>
-    <string name="help_set_4">[help_set_4]</string>
-    <string name="help_set_5">[help_set_5]</string>
-    <string name="help_set_6">[help_set_6]</string>
-    <string name="help_set_7">[help_set_7]</string>
+    <string name="help_about_games">
+        * Time Attack Mode\n
+        Find only one SET in 9 cards while 1 minute\n
+        \n
+        * VS Mode\n
+        Find all SET in 9 cards and call Complete\n
+        \n
+        \n
+        - SET basic rules
+    </string>
+    <string name="help_set_1">1. Different Colors / Same Shape / Same Filter</string>
+    <string name="help_set_2">\n2. Same Colors / Different Shape / Same Filter</string>
+    <string name="help_set_3">\n3. Same Colors / Same Shape / Different Filter</string>
+    <string name="help_set_4">\n4. Different Colors / Different Shape / Same Filter</string>
+    <string name="help_set_5">\n5. Different Colors / Same Shape / Different Filter</string>
+    <string name="help_set_6">\n6. Same Colors / Different Shape / Different Filter</string>
+    <string name="help_set_7">\n7. Different Colors / Different Shape / Different Filter</string>
 
 </resources>

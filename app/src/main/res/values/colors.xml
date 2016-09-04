@@ -19,10 +19,11 @@
     <color name="purple">#DA70D6</color>
     <color name="orange">#FF8C00</color>
 
-    <color name="pastel_blue">#ffa1deff</color>
-    <color name="pastel_pink">#ffffb0c5</color>
-    <color name="pastel_green">#ffb2ffd1</color>
-    <color name="pastel_yellow">#fffdfa87</color>
-    <color name="pastel_purple">#ffe6c7f0</color>
-    <color name="pastel_orange">#ffffe4af</color>
+    <color name="pastel_blue">#A8C8F9</color>
+    <color name="pastel_pink">#FFADC5</color>
+    <color name="pastel_green">#B8F3B8</color>
+    <color name="pastel_navy">#9197B5</color>
+    <color name="pastel_purple">#E6C7F0</color>
+    <color name="pastel_orange">#FFDDA6</color>
+    <color name="pastel_gray">#EBE5E4</color>
 </resources>

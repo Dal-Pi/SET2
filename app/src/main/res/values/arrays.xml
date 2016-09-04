@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <array name="controlColors">
-        <item>@color/blue</item>
-        <item>@color/navy</item>
-        <item>@color/green</item>
-        <item>@color/yellow</item>
-        <item>@color/purple</item>
-        <item>@color/orange</item>
-    </array>
 
     <array name="pointColors">
         <item>@color/pastel_blue</item>
@@ -21,8 +13,9 @@
         <item>@color/pastel_blue</item>
         <item>@color/pastel_pink</item>
         <item>@color/pastel_green</item>
-        <item>@color/pastel_yellow</item>
+        <item>@color/pastel_navy</item>
         <item>@color/pastel_purple</item>
         <item>@color/pastel_orange</item>
+        <item>@color/pastel_gray</item>
     </array>
 </resources>

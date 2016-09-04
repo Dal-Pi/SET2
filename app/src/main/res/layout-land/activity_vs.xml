@@ -16,7 +16,7 @@
             android:id="@+id/vs_text_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_centerInParent="true"
             android:clickable="true"
             android:text="@string/vs_text_title_start"/>
