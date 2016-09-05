@@ -1,35 +1,35 @@
 <resources>
-    <string name="app_name">SET</string>
+    <string name="app_name" translatable="false">SET</string>
 
     <string name="easy">Easy</string>
     <string name="hard">Hard</string>
-    <string name="unknown_player">unknown</string>
+    <string name="unknown_player" translatable="false">unknown</string>
     <string name="text_ok">OK</string>
     <string name="text_cancel">Cancel</string>
     <string name="text_exit">exit</string>
     <string name="text_backpress">Tap the Back button one more time to exit</string>
 
-    <string name="main_btn_time">Time Attack Mode</string>
+    <string name="main_btn_time" translatable="false">Time Attack Mode</string>
     <string name="main_btn_vs">VS Mode</string>
-    <string name="main_btn_how">How To Play</string>
+    <string name="main_btn_how" translatable="false">How To Play</string>
     <string name="main_btn_rank">Rank (Time Attack Mode)</string>
 
     <string name="timeattack_text_end">End!</string>
     <string name="timeattack_text_score">Score</string>
     <string name="timeattack_text_hint">Hint</string>
-    <string name="timeattack_text_result">Your Score is</string>
+    <string name="timeattack_text_result" translatable="false">Your Score is</string>
     <string name="timeattack_text_register">Register</string>
     <string name="timeattack_text_name">Input name</string>
 
-    <string name="ninecard_number_1">1</string>
-    <string name="ninecard_number_2">2</string>
-    <string name="ninecard_number_3">3</string>
-    <string name="ninecard_number_4">4</string>
-    <string name="ninecard_number_5">5</string>
-    <string name="ninecard_number_6">6</string>
-    <string name="ninecard_number_7">7</string>
-    <string name="ninecard_number_8">8</string>
-    <string name="ninecard_number_9">9</string>
+    <string name="ninecard_number_1" translatable="false">1</string>
+    <string name="ninecard_number_2" translatable="false">2</string>
+    <string name="ninecard_number_3" translatable="false">3</string>
+    <string name="ninecard_number_4" translatable="false">4</string>
+    <string name="ninecard_number_5" translatable="false">5</string>
+    <string name="ninecard_number_6" translatable="false">6</string>
+    <string name="ninecard_number_7" translatable="false">7</string>
+    <string name="ninecard_number_8" translatable="false">8</string>
+    <string name="ninecard_number_9" translatable="false">9</string>
 
     <string name="rank_text_title">RANK</string>
     <string name="rank_text_rank">Rank</string>
@@ -38,8 +38,8 @@
     <string name="rank_text_date">Date</string>
 
 
-    <string name="vs_text_stage">Stage</string>
-    <string name="vs_text_player">Player</string>
+    <string name="vs_text_stage" translatable="false">Stage</string>
+    <string name="vs_text_player" translatable="false">Player</string>
     <string name="vs_text_player_dialog_title">Insert player name</string>
     <string name="vs_text_player_hint">name</string>
     <string name="vs_text_score">Score</string>
