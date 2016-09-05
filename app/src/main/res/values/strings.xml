@@ -54,15 +54,15 @@
     <string name="vs_btn_set">Set</string>
     <string name="vs_btn_complete">Complete</string>
     <string name="vs_btn_start">Start</string>
-    <string name="vs_btn_pass">Pass</string>
+    <string name="vs_btn_pass">Show answer</string>
     <string name="vs_btn_next">Next</string>
 
     <string name="help_about_games">
         * Time Attack Mode\n
-        Find only one SET in 9 cards while 1 minute\n
+        Find SET only one exist in 9 cards while 1 minute.\n
         \n
         * VS Mode\n
-        Find all SET in 9 cards and call Complete\n
+        Find SET in 9 cards with \'Set\' button and select \'Complete\' button when all SET is found.\n
         \n
         \n
         - SET basic rules

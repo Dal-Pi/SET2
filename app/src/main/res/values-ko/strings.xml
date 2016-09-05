@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="easy">쉬움</string>
+    <string name="hard">어려움</string>
+    <string name="text_ok">확인</string>
+    <string name="text_cancel">취소</string>
+    <string name="text_exit">나가기</string>
+    <string name="text_backpress">\'뒤로\' 버튼을 한번 더 누르면 종료합니다.</string>
+
+    <string name="main_btn_vs">VS Mode (결합 게임)</string>
+    <string name="main_btn_rank">순위 (Time Attack Mode)</string>
+
+    <string name="timeattack_text_end">게임 종료!</string>
+    <string name="timeattack_text_score">점수</string>
+    <string name="timeattack_text_hint">힌트</string>
+    <string name="timeattack_text_register">순위 등록</string>
+    <string name="timeattack_text_name">이름을 입력하세요.</string>
+
+    <string name="rank_text_title">순위</string>
+    <string name="rank_text_rank">순위</string>
+    <string name="rank_text_name">이름</string>
+    <string name="rank_text_score">점수</string>
+    <string name="rank_text_date">등록일</string>
+
+    <string name="vs_text_player_dialog_title">플레이어 이름을 입력하세요.</string>
+    <string name="vs_text_player_hint">이름</string>
+    <string name="vs_text_score">점수</string>
+    <string name="vs_text_title_start">\'시작\' 버튼을 선택하세요.</string>
+    <string name="vs_text_dialog_title">결과</string>
+    <string name="vs_text_dialog_win_postfix">승리!</string>
+    <string name="vs_text_dialog_draw">무승부!</string>
+    <string name="vs_text_dialog_pass_title">Stage 건너뛰기</string>
+    <string name="vs_text_dialog_pass_desc">모든 정답을 표시하고 Stage를 종료합니다.</string>
+    <string name="vs_text_dialog_pass_ok">정답 보기</string>
+    <string name="vs_text_pass_guide">\'다음\' 버튼을 선택하면 다음 Stage로 진행합니다.</string>
+    <string name="vs_btn_set">합</string>
+    <string name="vs_btn_complete">결</string>
+    <string name="vs_btn_start">시작</string>
+    <string name="vs_btn_pass">정답 보기</string>
+    <string name="vs_btn_next">다음</string>
+
+    <string name="help_about_games">
+        * Time Attack Mode\n
+        1분 동안 9장의 카드 중 단 하나만 존재하는 SET을 찾으세요!\n
+        \n
+        * VS Mode\n
+        \'합\'을 선택하여 9장의 카드에서 SET을 찾은 다음 모든 SET을 찾았으면 \'결\'을 선택하세요!\n
+        \n
+        \n
+        - SET 기본 법칙
+    </string>
+    <string name="help_set_1">1. 서로 다른 색상 / 같은 모양 / 같은 내부 패턴</string>
+    <string name="help_set_2">\n2. 같은 색상 / 서로 다른 모양 / 같은 내부 패턴</string>
+    <string name="help_set_3">\n3. 같은 색상 / 같은 모양 / 서로 다른 내부 패턴</string>
+    <string name="help_set_4">\n4. 서로 다른 색상 / 서로 다른 모양 / 같은 내부 패턴</string>
+    <string name="help_set_5">\n5. 서로 다른 색상 / 같은 모양 / 서로 다른 내부 패턴</string>
+    <string name="help_set_6">\n6. 같은 색상 / 서로 다른 모양 / 서로 다른 내부 패턴</string>
+    <string name="help_set_7">\n7. 서로 다른 색상 / 서로 다른 모양 / 서로 다른 내부 패턴</string>
+</resources>
