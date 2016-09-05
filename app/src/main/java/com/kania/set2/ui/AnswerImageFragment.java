@@ -35,8 +35,6 @@ public class AnswerImageFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_answerimage, container, false);
         mImageNoti = (ImageView)view.findViewById(R.id.answer_image_result);
-        //test
-        Log.d("SET2", "mImageNoti = " + mImageNoti);
         return view;
     }
 

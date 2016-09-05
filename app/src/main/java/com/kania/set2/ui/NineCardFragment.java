@@ -91,10 +91,6 @@ public class NineCardFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //test start
-//        Log.d("SET2", "size of container : " + container.getWidth() + " / " + container.getHeight());
-
-        //test end
         View view = inflater.inflate(R.layout.fragment_ninecard, container, false);
         initView(view);
         return view;
@@ -149,7 +145,7 @@ public class NineCardFragment extends Fragment implements View.OnClickListener {
             case R.id.ninecard_image_card8: pos = 7; break;
             case R.id.ninecard_image_card9: pos = 8; break;
             default:
-                Log.d("SET2", "error! invaild position");
+                Log.e("SET2", "error! invaild position");
                 return;
         }
         selectCard(pos);
@@ -217,7 +213,7 @@ public class NineCardFragment extends Fragment implements View.OnClickListener {
 
     public void selectCard(Vector<Integer> positions) {
         if (positions.size() >= NUM_ANS_CARDS) {
-            Log.d("SET2", "do not try to select over 3 cards");
+            Log.e("SET2", "do not try to select over 3 cards");
         }
         for (int pos : positions) {
             selectCard(pos);

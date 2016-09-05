@@ -323,7 +323,7 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
         } else {
             mSelectedPositionList.add(position);
         }
-        Log.d("SET", "selected : " + mSelectedPositionList.toString());
+        //Log.d("SET", "selected : " + mSelectedPositionList.toString());
     }
 
     private boolean checkAnswer(Vector<SetItemData> candidates) {
@@ -520,10 +520,8 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
     private void initGameData() {
         int[] colors = getResources().getIntArray(R.array.pointColors);
         Calendar calendar = Calendar.getInstance();
-        Log.d("SET2", "colors = " + colors.toString());
         int[] randomIndexs = RandomNumberUtil.getInstance(calendar.getTimeInMillis())
                 .getRandomNumberSet(colors.length);
-        Log.d("SET2", "randomIndexs = " + randomIndexs.toString());
         for (int i = 0; i < mPlayers.size(); ++i) {
             PlayerData player = mPlayers.get(i);
             player.name = getString(R.string.vs_text_player) + (i + 1);
@@ -660,7 +658,7 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
 
     //state methods [start]
     private void setPrepareState() {
-        Log.d("SET2", "[state] setPrepareState");
+        //Log.d("SET2", "[state] setPrepareState");
         mBtnStart.setVisibility(View.VISIBLE);
         mBtnPass.setVisibility(View.INVISIBLE);
         enablePlayerButton(false);
@@ -677,7 +675,7 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void setReadyState() {
-        Log.d("SET2", "[state] setReadyState");
+        //Log.d("SET2", "[state] setReadyState");
         mBtnPass.setVisibility(View.VISIBLE);
         mBtnPass.setText(getString(R.string.vs_btn_pass));
         enablePassButton(true);
@@ -692,7 +690,7 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void setCalledSetState(){
-        Log.d("SET2", "[state] setCalledSetState");
+        //Log.d("SET2", "[state] setCalledSetState");
         enablePassButton(false);
         mNineCardFragment.setClickable(true);
         mSelectedLayout.setBackgroundColor(mNowFlagedPlayer.color);
@@ -701,7 +699,7 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void setChanceCompleteState() {
-        Log.d("SET2", "[state] setChanceCompleteState");
+        //Log.d("SET2", "[state] setChanceCompleteState");
         enablePassButton(false);
         mNineCardFragment.unselectAllCard();
         mNineCardFragment.setClickable(false);
@@ -713,6 +711,7 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void setPassState() {
+        //Log.d("SET2", "[state] setPassState");
         enablePassButton(true);
         mBtnPass.setText(getString(R.string.vs_btn_next));
         enablePlayerButton(false);
@@ -722,6 +721,7 @@ public class VsModeActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void setEndState() {
+        //Log.d("SET2", "[state] setEndState");
         showResultDialog();
     }
     //state methods [end]
