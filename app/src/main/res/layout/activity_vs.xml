@@ -42,19 +42,19 @@
             android:layout_height="match_parent"
             android:padding="@dimen/vs_ninecard_margin_selected">
 
-            <Button
-                android:id="@+id/vs_btn_start"
-                style="@style/setControlButtonStyle"
-                android:layout_centerInParent="true"
-                android:text="@string/vs_btn_start"
-                android:visibility="gone"/>
-
             <FrameLayout
                 android:id="@+id/vs_container_ninecard"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
             </FrameLayout>
+
+            <Button
+                android:id="@+id/vs_btn_start"
+                style="@style/setControlButtonStyle"
+                android:layout_centerInParent="true"
+                android:text="@string/vs_btn_start"
+                android:visibility="gone"/>
 
         </RelativeLayout>
 

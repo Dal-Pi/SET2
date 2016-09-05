@@ -68,11 +68,11 @@
         - SET basic rules
     </string>
     <string name="help_set_1">1. Different Colors / Same Shape / Same Filter</string>
-    <string name="help_set_2">\n2. Same Colors / Different Shape / Same Filter</string>
-    <string name="help_set_3">\n3. Same Colors / Same Shape / Different Filter</string>
-    <string name="help_set_4">\n4. Different Colors / Different Shape / Same Filter</string>
-    <string name="help_set_5">\n5. Different Colors / Same Shape / Different Filter</string>
-    <string name="help_set_6">\n6. Same Colors / Different Shape / Different Filter</string>
-    <string name="help_set_7">\n7. Different Colors / Different Shape / Different Filter</string>
+    <string name="help_set_2">\n2. Same Color / Different Shapes / Same Filter</string>
+    <string name="help_set_3">\n3. Same Color / Same Shape / Different Filters</string>
+    <string name="help_set_4">\n4. Different Colors / Different Shapes / Same Filter</string>
+    <string name="help_set_5">\n5. Different Colors / Same Shape / Different Filters</string>
+    <string name="help_set_6">\n6. Same Color / Different Shapes / Different Filters</string>
+    <string name="help_set_7">\n7. Different Colors / Different Shapes / Different Filters</string>
 
 </resources>

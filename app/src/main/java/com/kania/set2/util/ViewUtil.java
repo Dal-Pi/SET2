@@ -1,6 +1,8 @@
 package com.kania.set2.util;
 
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
 import android.widget.Button;
 
 /**
@@ -10,6 +12,8 @@ import android.widget.Button;
 public class ViewUtil {
 
     public static void setButtonColor(Button btn, int color) {
-        btn.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+        Drawable d = btn.getBackground();
+        d.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_ATOP));
+        btn.setBackgroundDrawable(d);
     }
 }

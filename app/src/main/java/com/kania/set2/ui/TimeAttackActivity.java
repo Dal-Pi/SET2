@@ -203,7 +203,7 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
         mAnswerImageFragment = AnswerImageFragment.newInstance();
         //TODO expend card type
         mNineCardFragment = NineCardFragment
-                .newInstance(NineCardFragment.CARD_TYPE_FILL_AS_PATTERN, false, this);
+                .newInstance(NineCardFragment.CARD_TYPE_FILL_AS_PATTERN, true, this);
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.timeattack_container_answer, mAnswerImageFragment);
@@ -330,7 +330,9 @@ public class TimeAttackActivity extends AppCompatActivity implements View.OnClic
         if (difficulty == DIFFICULTY_HARD) {
             secondItem = mAllItemList.get(mAllItemListSequence[1]);
         } else { //DIFFICULTY_EASY
-            for (SetItemData item : mAllItemList) {
+//            for (SetItemData item : mAllItemList) {
+            for (int i = 0; i < mAllItemList.size(); ++i) {
+                SetItemData item = mAllItemList.get(mAllItemListSequence[i]);
                 int matchCount = 0;
                 if (firstItem.mColor == item.mColor) {matchCount++;}
                 if (firstItem.mShape == item.mShape) {matchCount++;}
