@@ -39,16 +39,26 @@
     <string name="vs_btn_pass">정답 보기</string>
     <string name="vs_btn_next">다음</string>
 
-    <string name="help_about_games">
-        * Time Attack Mode\n
-        1분 동안 9장의 카드 중 단 하나만 존재하는 SET을 찾으세요!\n
-        \n
-        * VS Mode\n
-        \'합\'을 선택하여 9장의 카드에서 SET을 찾은 다음 모든 SET을 찾았으면 \'결\'을 선택하세요!\n
-        \n
-        \n
-        - SET 기본 법칙
-    </string>
+    <string name="help_timeattack_title">\n\n* Time Attack Mode (쉬움 / 어려움)</string>
+    <string name="help_timeattack_description">" - 9장의 카드 중에 유일하게 하나만 존재하는 SET을 찾는 게임입니다.\n - SET을 찾으면 3점을 획득하며 새로운 9장의 카드가 나타납니다.\n - 1분동안 획득한 점수를 통해 순위를 결정합니다.\n"</string>
+    <string name="help_timeattack_hint">" - Tip. 힌트 버튼을 선택하면 정답 카드 중 일부분이 선택됩니다.\n</string>
+    <string name="help_timeattack_score_title">[획득 가능한 점수]</string>
+    <string name="help_timeattack_score_info">" - SET을 찾은 경우 (+3)\n - 힌트 버튼을 한 번 선택하고 SET을 찾은 경우 (+1)\n - 힌트 버튼을 두 번 이상 선택하고 SET을 찾은 경우 (0)\n"</string>
+
+    <string name="help_vs_title">* VS Mode (결합 게임 Mode)</string>
+    <string name="help_vs_description">" - 9장의 카드 중에 존재하는 모든 SET을 찾는 게임입니다.\n - \'Set\'버튼을 누르고 세 장의 SET을 선택하면 점수를 획득합니다.\n - 더 이상 SET이 존재하지 않을 때 \'Complete\'버튼을 누르면 점수를 획득하며 다음 stage로 넘어갑니다.\n - 총 10 Stage에서 획득한 점수로 승자를 결정합니다.\n"</string>
+    <string name="help_vs_hint">" - Tip1. \'Set\'을 성공한 Player는 2초간 \'Complete\'를 먼저 선택할 수 있는 기회를 얻습니다.\n - Tip2. 모든 SET을 찾기 어려운 경우 \'정답 보기\' 버튼을 선택하세요. 찾지 못한 SET은 빨간색으로 표시됩니다. 선택 시 해당 Stage는 종료되며 \'다음\' 버튼을 선택하여 다음 stage로 넘어갈 수 있습니다.\n"</string>
+    <string name="help_vs_score_title">[획득 가능한 점수 및 감점]</string>
+    <string name="help_vs_score_info_plus">" - SET을 찾은 경우 (+1)\n - \'Complete\'에 성공한 경우 (+3)"</string>
+    <string name="help_vs_score_info_minus">" - 잘못된 SET을 선택 (-1)\n - 이미 선택한 SET을 다시 선택한 경우 (-1)\n - \'Set\'버튼을 선택하고 제한 시간이 지난 경우 (-1)\n - \'Complete\'를 실패하였을 경우 (-1)\n"</string>
+
+
+    <string name="help_about_set_title">* SET 기본 규칙</string>
+    <string name="help_about_set_description">" - SET에서 카드는 세 가지 속성으로 이루어져 있으며 각각의 속성은 세 타입으로 이루어져 있습니다.\n (색상, 모양, 내부 패턴)\n"</string>
+    <string name="help_about_set_color">색상</string>
+    <string name="help_about_set_shape">모양</string>
+    <string name="help_about_set_filter">내부 패턴</string>
+    <string name="help_about_set_pattern_desc">"\n - SET은 각각의 속성이 모두 같거나 모두 다른 세 장의 카드를 의미합니다.\n가능한 패턴은 아래의 7가지 경우 입니다.\n"</string>
     <string name="help_set_1">1. 서로 다른 색상 / 같은 모양 / 같은 내부 패턴</string>
     <string name="help_set_2">\n2. 같은 색상 / 서로 다른 모양 / 같은 내부 패턴</string>
     <string name="help_set_3">\n3. 같은 색상 / 같은 모양 / 서로 다른 내부 패턴</string>

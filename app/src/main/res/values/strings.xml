@@ -57,16 +57,26 @@
     <string name="vs_btn_pass">Show answer</string>
     <string name="vs_btn_next">Next</string>
 
-    <string name="help_about_games">
-        * Time Attack Mode\n
-        Find SET only one exist in 9 cards while 1 minute.\n
-        \n
-        * VS Mode\n
-        Find SET in 9 cards with \'Set\' button and select \'Complete\' button when all SET is found.\n
-        \n
-        \n
-        - SET basic rules
-    </string>
+    <string name="help_timeattack_title">\n\n* Time Attack Mode (Easy / Hard)</string>
+    <string name="help_timeattack_description">"- Find SET only one exist in nine cards while 1 minute!\n- If succeed to find SET, get +3 score. Then shows new nine cards.\n"</string>
+    <string name="help_timeattack_hint">"- Tip. Select \'Hint\' button to show card(s) of SET.\n"</string>
+    <string name="help_timeattack_score_title">[Score table]</string>
+    <string name="help_timeattack_score_info">"- When succeed to find SET. (+3)\n- When succeed to find SET with one time selected Hint. (+1)\n- With more than two times selected Hint. (0)\n"</string>
+
+    <string name="help_vs_title">* VS Mode</string>
+    <string name="help_vs_description">"- Find all of SET in nine cards while 10 stages!\n- If find set, select \'Set\' button to pick three cards.\n- If there is no more remained SET, select \'Complete\' button.\n"</string>
+    <string name="help_vs_hint">"-Tip1. Player who succeeded to find set, get chance to select \'Complete\' while 2 seconds.\n- Tip2. If all player is hard to find all set, select \'Show Answer\' button. It will shows remain SET(s) and stage is ended. Select to \'Next\' to pass next stage.\n"</string>
+    <string name="help_vs_score_title">[Score table]</string>
+    <string name="help_vs_score_info_plus">"- If find valid SET. (+1)\n- If select \'Complete\' when all SET is found. (+3)"</string>
+    <string name="help_vs_score_info_minus">"- Invalid SET. (-1)\n- Already found SET. (-1)\n- Timeout. (-1)\n- Fail to \'Complete\' (-1)\n"</string>
+
+    <string name="help_about_set_title">* SET basic rules</string>
+    <string name="help_about_set_description">"- A card consist of three attributes and each attribute has three types\n (Color, Shape, Inner filter)\n"</string>
+    <string name="help_about_set_color">Colors</string>
+    <string name="help_about_set_shape">Shapes</string>
+    <string name="help_about_set_filter">Inner filters</string>
+    <string name="help_about_set_pattern_desc">"\n - SET means each attributes are all same or each different.\nAvailable patterns are below seven ways.\n"</string>
+
     <string name="help_set_1">1. Different Colors / Same Shape / Same Filter</string>
     <string name="help_set_2">\n2. Same Color / Different Shapes / Same Filter</string>
     <string name="help_set_3">\n3. Same Color / Same Shape / Different Filters</string>

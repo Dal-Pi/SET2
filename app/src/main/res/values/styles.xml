@@ -72,4 +72,27 @@
         <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
     </style>
 
+    <style name="helpTextViewStyleBase">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="helpTextViewTitleStyle" parent="@style/helpTextViewStyleBase">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+    </style>
+    <style name="helpTextViewDescStyle" parent="@style/helpTextViewStyleBase">
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+    </style>
+
+    <style name="helpImageViewStyleBase">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">@dimen/activity_margin_help</item>
+        <item name="android:paddingRight">@dimen/activity_margin_help</item>
+    </style>
+    <style name="helpImageViewAttrStyle" parent="@style/helpImageViewStyleBase">
+    </style>
+    <style name="helpImageViewCaseStyle" parent="@style/helpImageViewStyleBase">
+    </style>
+
 </resources>

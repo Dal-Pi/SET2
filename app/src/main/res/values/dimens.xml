@@ -6,6 +6,7 @@
 
     <!-- need to expend other resolutions. -->
     <dimen name="activity_margin_all">5dp</dimen>
+    <dimen name="activity_margin_help">16dp</dimen>
 
     <dimen name="main_title_font_size">50dp</dimen>
 

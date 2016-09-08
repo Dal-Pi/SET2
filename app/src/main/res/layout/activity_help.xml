@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/activity_margin_all"
+    android:padding="@dimen/activity_margin_help"
     android:orientation="vertical"
     android:background="@color/base_white"
     android:gravity="left">
@@ -17,73 +17,128 @@
             android:orientation="vertical">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/help_about_games"/>
+                style="@style/helpTextViewTitleStyle"
+                android:text="@string/help_about_set_title"/>
+            <TextView
+                style="@style/helpTextViewDescStyle"
+                android:text="@string/help_about_set_description"/>
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/helpTextViewDescStyle"
+                android:text="@string/help_about_set_color" />
+            <ImageView
+                style="@style/helpImageViewAttrStyle"
+                android:src="@drawable/help_color" />
+            <TextView
+                style="@style/helpTextViewDescStyle"
+                android:text="@string/help_about_set_shape" />
+            <ImageView
+                style="@style/helpImageViewAttrStyle"
+                android:src="@drawable/help_shape" />
+            <TextView
+                style="@style/helpTextViewDescStyle"
+                android:text="@string/help_about_set_filter" />
+            <ImageView
+                style="@style/helpImageViewAttrStyle"
+                android:src="@drawable/help_filter" />
+
+            <TextView
+                style="@style/helpTextViewDescStyle"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold"
+                android:text="@string/help_about_set_pattern_desc"/>
+
+            <TextView
+                style="@style/helpTextViewDescStyle"
+                android:textStyle="bold"
                 android:text="@string/help_set_1"/>
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/helpImageViewCaseStyle"
                 android:src="@drawable/help_1"/>
-
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/helpTextViewDescStyle"
+                android:textStyle="bold"
                 android:text="@string/help_set_2"/>
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/helpImageViewCaseStyle"
                 android:src="@drawable/help_2"/>
-
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/helpTextViewDescStyle"
+                android:textStyle="bold"
                 android:text="@string/help_set_3"/>
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/helpImageViewCaseStyle"
                 android:src="@drawable/help_3"/>
-
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/helpTextViewDescStyle"
+                android:textStyle="bold"
                 android:text="@string/help_set_4"/>
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/helpImageViewCaseStyle"
                 android:src="@drawable/help_4"/>
-
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/helpTextViewDescStyle"
+                android:textStyle="bold"
                 android:text="@string/help_set_5"/>
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/helpImageViewCaseStyle"
                 android:src="@drawable/help_5"/>
-
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/helpTextViewDescStyle"
+                android:textStyle="bold"
                 android:text="@string/help_set_6"/>
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/helpImageViewCaseStyle"
                 android:src="@drawable/help_6"/>
-
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/helpTextViewDescStyle"
+                android:textStyle="bold"
                 android:text="@string/help_set_7"/>
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/helpImageViewCaseStyle"
                 android:src="@drawable/help_7"/>
 
+            <TextView
+                style="@style/helpTextViewTitleStyle"
+                android:text="@string/help_timeattack_title"/>
+            <TextView
+                style="@style/helpTextViewDescStyle"
+                android:text="@string/help_timeattack_description"/>
+            <TextView
+                style="@style/helpTextViewDescStyle"
+                android:textColor="@color/blue"
+                android:text="@string/help_timeattack_hint"/>
+            <TextView
+                style="@style/helpTextViewDescStyle"
+                android:textStyle="bold"
+                android:text="@string/help_timeattack_score_title"/>
+            <TextView
+                style="@style/helpTextViewDescStyle"
+                android:textColor="@color/green"
+                android:text="@string/help_timeattack_score_info"/>
+
+            <TextView
+                style="@style/helpTextViewTitleStyle"
+                android:text="@string/help_vs_title"/>
+            <TextView
+                style="@style/helpTextViewDescStyle"
+                android:text="@string/help_vs_description"/>
+            <TextView
+                style="@style/helpTextViewDescStyle"
+                android:textColor="@color/blue"
+                android:text="@string/help_vs_hint"/>
+            <TextView
+                style="@style/helpTextViewDescStyle"
+                android:textStyle="bold"
+                android:text="@string/help_vs_score_title"/>
+            <TextView
+                style="@style/helpTextViewDescStyle"
+                android:textColor="@color/green"
+                android:text="@string/help_vs_score_info_plus"/>
+            <TextView
+                style="@style/helpTextViewDescStyle"
+                android:textColor="@color/red"
+                android:text="@string/help_vs_score_info_minus"/>
         </LinearLayout>
     </ScrollView>
 
